@@ -1,0 +1,111 @@
+﻿@using TennisAcademyApp.ViewModels.Coach;
+@model PaginatedCoachesViewModel
+
+@{
+    var requestCulture = ViewContext.HttpContext.Features.Get<Microsoft.AspNetCore.Localization.IRequestCultureFeature>();
+    var currentCulture = requestCulture?.RequestCulture.UICulture.Name ?? "en";
+    var isBg = currentCulture == "bg";
+
+    ViewData["Title"] = isBg ? "Треньорски състав" : "Coaches";
+}
+
+<link rel="stylesheet" href="~/css/coach.css" asp-append-version="true" />
+
+<div class="text-center my-5">
+    <h2 class="fw-bold display-5 text-light">@(isBg ? "Запознайте се с нашите треньори!" : "Meet Our Professional Coaches!")</h2>
+    <p class="text-white-50 fs-5">@(isBg ? "Открийте перфектния ментор за вашата игра" : "Find the perfect mentor to elevate your game")</p>
+</div>
+
+<div class="row justify-content-center mb-5">
+    <div class="col-md-8 col-lg-5">
+        <form asp-action="Index" method="get">
+            <div class="input-group search-wrapper rounded-pill overflow-hidden p-1 bg-card">
+                <span class="input-group-text border-0 bg-transparent text-muted ps-3">
+                    <i class="bi bi-search fs-5"></i>
+                </span>
+                <input type="text"
+                       name="searchQuery"
+                       class="form-control border-0 bg-transparent text-light shadow-none py-2"
+                       placeholder="@(isBg ? "Търсене по име на треньор..." : "Search coach by name...")"
+                       value="@Model.SearchQuery" />
+
+                @if (!string.IsNullOrEmpty(Model.SearchQuery))
+                {
+                    <a asp-action="Index" class="btn btn-link text-decoration-none text-muted d-flex align-items-center px-2 shadow-none">
+                        <i class="bi bi-x-circle-fill fs-5"></i>
+                    </a>
+                }
+                <button type="submit" class="btn btn-primary rounded-pill px-4 ms-1 fw-semibold shadow-sm">
+                    @(isBg ? "Търси" : "Search")
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    @foreach (var coach in Model.Coaches)
+    {
+        <div class="col">
+            <div class="card coach-card h-100 shadow-sm border-0 bg-card rounded-4 overflow-hidden text-light d-flex flex-column">
+                <div class="position-relative overflow-hidden" style="height: 380px;">
+                    <img src="@Url.Content(coach.ImageUrl)"
+                         class="zoom-img w-100 h-100 object-fit-cover"
+                         alt="@coach.CoachName" />
+                    <div class="position-absolute bottom-0 start-0 w-100 p-3 bg-gradient" style="background: linear-gradient(transparent, rgba(0,0,0,0.8));">
+                        <span class="badge bg-primary rounded-pill px-3 py-2 small">
+                            <i class="bi bi-calendar3 me-1"></i> @coach.CoachAge @(isBg ? "години" : "years old")
+                        </span>
+                    </div>
+                </div>
+
+                <div class="card-body d-flex flex-column text-center p-4">
+                    <h4 class="fw-bold mb-4 text-accent">@(isBg ? (coach.CoachNameBg ?? coach.CoachName) : coach.CoachName)</h4>
+
+                    <a asp-action="Details" asp-route-id="@coach.CoachId" class="btn btn-outline-primary w-100 py-2.5 rounded-3 fw-semibold mt-auto transition">
+                        <i class="bi bi-info-circle me-2"></i>@(isBg ? "Виж Детайли" : "View Details")
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@if (Model.TotalPages > 1)
+{
+    <nav aria-label="Page navigation" class="mt-5">
+        <ul class="pagination justify-content-center">
+
+            <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                <a class="page-link btn btn-outline-success me-1 rounded-3"
+                   asp-action="Index"
+                   asp-route-page="@(Model.PageNumber - 1)"
+                   asp-route-searchQuery="@Model.SearchQuery">
+                    &laquo; @(isBg ? "Предишна" : "Previous")
+                </a>
+            </li>
+
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="page-item mx-1">
+                    <a class="page-link rounded-3 @(i == Model.PageNumber ? "bg-success text-light border-success" : "bg-card text-success border-secondary")"
+                       asp-action="Index"
+                       asp-route-page="@i"
+                       asp-route-searchQuery="@Model.SearchQuery">
+                        @i
+                    </a>
+                </li>
+            }
+
+            <li class="page-item @(Model.PageNumber == Model.TotalPages ? "disabled" : "")">
+                <a class="page-link btn btn-outline-success ms-1 rounded-3"
+                   asp-action="Index"
+                   asp-route-page="@(Model.PageNumber + 1)"
+                   asp-route-searchQuery="@Model.SearchQuery">
+                    @(isBg ? "Следваща" : "Next") &raquo;
+                </a>
+            </li>
+
+        </ul>
+    </nav>
+}

@@ -1,0 +1,20 @@
+﻿@{
+    var requestCulture = Context.Features.Get<Microsoft.AspNetCore.Localization.IRequestCultureFeature>();
+    var currentCulture = requestCulture?.RequestCulture.UICulture.Name ?? "en";
+    var isBg = currentCulture == "bg";
+
+    ViewData["Title"] = isBg ? "Страницата не е намерена" : "Page Not Found";
+}
+
+<div style="display: flex; align-items: center; justify-content: center; min-height: 80vh; flex-direction: column; text-align: center;">
+    <h1 style="font-size: 6rem; margin-bottom: 0.5rem; color: #dc3545;">404</h1>
+    <h2 style="font-size: 2rem; margin-bottom: 1rem;">@(isBg ? "Упс! Страницата не е намерена" : "Oops! Page Not Found")</h2>
+    <p style="font-size: 1.2rem; color: #666; max-width: 500px;">
+        @(isBg
+                ? "Страницата, която търсите, може да е била премахната, името ѝ да е променено или да е временно недостъпна."
+                : "The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.")
+    </p>
+    <a href="@Url.Action("Index", "Home")" class="btn btn-primary mt-4" style="margin-top: 2rem; padding: 10px 20px; font-size: 1.1rem;">
+        @(isBg ? "Назад към Начало" : "Back to Home")
+    </a>
+</div>

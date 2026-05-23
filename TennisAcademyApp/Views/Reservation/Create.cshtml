@@ -1,0 +1,252 @@
+﻿@using TennisAcademyApp.ViewModels.Reservation;
+@using static TennisAcademyApp.GCommon.Validations.ValidationConstants.Reservation;
+@model ReservationCreateInputModel
+
+@{
+    var requestCulture = ViewContext.HttpContext.Features.Get<Microsoft.AspNetCore.Localization.IRequestCultureFeature>();
+    var currentCulture = requestCulture?.RequestCulture.UICulture.Name ?? "en";
+    var isBg = currentCulture == "bg";
+
+    ViewData["Title"] = isBg ? "Създай резервация" : "Create Reservation";
+}
+
+<link rel="stylesheet" href="~/css/Reservation.css" asp-append-version="true" />
+
+<div class="row justify-content-center align-items-center mt-4">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-lg border-0 rounded-4 p-4 position-relative">
+            <div class="card-body">
+
+                <div class="text-center mb-4">
+                    <i class="bi bi-calendar-plus text-primary fs-1"></i>
+                    <h2 class="fw-semibold mt-2">@(isBg ? "Нова резервация" : "Book a Court")</h2>
+                    <p class="text-muted small">@(isBg ? "Попълнете детайлите за вашия индивидуален урок" : "Fill in the details for your upcoming tennis session")</p>
+                </div>
+
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    var globalErrors = ViewData.ModelState[string.Empty]?.Errors;
+                    if (globalErrors != null && globalErrors.Count > 0)
+                    {
+                        <div class="alert alert-danger text-center border-0 rounded-3 mb-4">
+                            @foreach (var error in globalErrors)
+                            {
+                                <p class="mb-0 small">@error.ErrorMessage</p>
+                            }
+                        </div>
+                    }
+                }
+
+                <form asp-action="Create" method="post">
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Date" class="form-label">
+                            <i class="bi bi-clock me-1 text-primary"></i> @(isBg ? "Дата и час" : "Date & Time")
+                        </label>
+                        <input asp-for="Date" class="form-control" type="datetime-local" value="@Model.Date.ToString(DateFormat)" />
+                        <span asp-validation-for="Date" class="text-danger small"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Duration" class="form-label">
+                            <i class="bi bi-hourglass-split me-1 text-primary"></i> @(isBg ? "Продължителност" : "Duration")
+                        </label>
+                        <select asp-for="Duration" class="form-control form-select">
+                            <option value="60">60 @(isBg ? "минути" : "minutes")</option>
+                            <option value="120">120 @(isBg ? "минути" : "minutes")</option>
+                        </select>
+                        <span asp-validation-for="Duration" class="text-danger small"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <div class="position-relative d-inline-block w-100">
+                            <label asp-for="CoachId" class="form-label m-0">
+                                <i class="bi bi-person-badge me-1 text-primary"></i> @(isBg ? "Треньор" : "Coach")
+                            </label>
+
+                            <div id="coach-preview-holder">
+                                <img id="coach-popup-img" src="" alt="Coach Preview" />
+                            </div>
+                        </div>
+
+                        <input type="hidden" asp-for="CoachId" id="hidden-coach-id" />
+
+                        <div class="dropdown custom-coach-dropdown mt-2">
+                            <button class="form-control form-select text-start d-flex justify-content-between align-items-center" type="button" id="coachDropdownBtn" data-bs-toggle="dropdown" aria-expanded="false">
+                                @(isBg ? "-- Избери треньор --" : "-- Select Coach --")
+                            </button>
+
+                            <ul class="dropdown-menu w-100 p-2 shadow bg-dark" aria-labelledby="coachDropdownBtn">
+                                <li>
+                                    <a class="dropdown-item text-muted coach-hover-item" href="#" data-value="">
+                                        @(isBg ? "-- Избери треньор --" : "-- Select Coach --")
+                                    </a>
+                                </li>
+                                @foreach (var coach in Model.Coaches)
+                                {
+                                    var imgUrl = string.IsNullOrEmpty(coach.ImageUrl) ? "/pictures/DefaultUserImage.webp" : coach.ImageUrl;
+                                    <li>
+                                        <a class="dropdown-item text-light coach-hover-item" href="#" data-value="@coach.Id" data-img="@imgUrl">
+                                            @(isBg? coach.NameBg: coach.Name)
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                        <span asp-validation-for="CoachId" class="text-danger small"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+
+                        <div class="position-relative d-inline-block w-100">
+                            <label asp-for="SurfaceId" class="form-label m-0">
+                                <i class="bi bi-layers-half me-1 text-primary"></i> @(isBg ? "Настилка" : "Surface")
+                            </label>
+
+                            <div id="surface-preview-holder">
+                                <img id="popup-img" src="" alt="Surface Preview" />
+                            </div>
+                        </div>
+
+                        <input type="hidden" asp-for="SurfaceId" id="hidden-surface-id" />
+
+                        <div class="dropdown custom-surface-dropdown mt-2">
+                            <button class="form-control form-select text-start d-flex justify-content-between align-items-center" type="button" id="surfaceDropdownBtn" data-bs-toggle="dropdown" aria-expanded="false">
+                                @(isBg ? "-- Избери настилка --" : "-- Select Surface --")
+                            </button>
+
+                            <ul class="dropdown-menu w-100 p-2 shadow bg-dark" aria-labelledby="surfaceDropdownBtn">
+                                <li>
+                                    <a class="dropdown-item text-muted surface-hover-item" href="#" data-value="">
+                                        @(isBg ? "-- Избери настилка --" : "-- Select Surface --")
+                                    </a>
+                                </li>
+                                @foreach (var surface in Model.Surfaces)
+                                {
+                                    var targetImg = surface.Name.ToLower().Contains("clay")
+                                    ? "https://www.edwardssports.co.uk/pub/media/magefan_blog/Clay_Tennis_Courts.jpg"
+                                    : surface.Name.ToLower().Contains("grass")
+                                    ? "https://www.tennisnerd.net/wp-content/uploads/2024/06/grass-tennis.webp"
+                                    : "https://asltenniscourts.com.au/wp-content/uploads/2021/03/AdobeStock_253105355-1024x683.jpeg";
+
+                                    <li>
+                                        <a class="dropdown-item text-light surface-hover-item" href="#" data-value="@surface.Id" data-img="@targetImg">
+                                            @(isBg? surface.NameBg: surface.Name)
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                        <span asp-validation-for="SurfaceId" class="text-danger small"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="TrainingTypeId" class="form-label">
+                            <i class="bi bi-activity me-1 text-primary"></i> @(isBg ? "Тип тренировка" : "Training Type")
+                        </label>
+                        <select asp-for="TrainingTypeId" class="form-control form-select" asp-items="@(new SelectList(Model.TrainingTypes, "Id", isBg ? "NameBg" : "Name"))">
+                            <option value="">@(isBg ? "-- Избери тип тренировка --" : "-- Select Training Type --")</option>
+                        </select>
+                        <span asp-validation-for="TrainingTypeId" class="text-danger small"></span>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label asp-for="Note" class="form-label">
+                            <i class="bi bi-sticky me-1 text-primary"></i> @(isBg ? "Бележка" : "Note")
+                        </label>
+                        <textarea asp-for="Note" class="form-control" rows="3" placeholder="@(isBg ? "Добавете допълнителни изисквания..." : "Any special requests or details...")"></textarea>
+                        <span asp-validation-for="Note" class="text-danger small"></span>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2 pt-2">
+                        <a asp-action="Index" class="btn btn-outline-primary px-4 py-2 rounded-3">
+                            @(isBg ? "Назад" : "Back")
+                        </a>
+                        <button type="submit" class="btn btn-success px-4 py-2 rounded-3 fw-bold">
+                            <i class="bi bi-check-circle me-1"></i> @(isBg ? "Резервирай" : "Reserve")
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const dropdownBtn = document.getElementById("surfaceDropdownBtn");
+            const hiddenInput = document.getElementById("hidden-surface-id");
+            const previewHolder = document.getElementById("surface-preview-holder");
+            const popupImg = document.getElementById("popup-img");
+            const hoverItems = document.querySelectorAll(".surface-hover-item");
+
+            hoverItems.forEach(item => {
+                item.addEventListener("mouseenter", function () {
+                    const imgUrl = this.getAttribute("data-img");
+                    if (imgUrl) {
+                        popupImg.src = imgUrl;
+                        previewHolder.classList.add("visible");
+                    } else {
+                        previewHolder.classList.remove("visible");
+                    }
+                });
+
+                item.addEventListener("mouseleave", function () {
+                    previewHolder.classList.remove("visible");
+                });
+
+                item.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    const value = this.getAttribute("data-value");
+                    const text = this.textContent.trim();
+
+                    hiddenInput.value = value;
+                    dropdownBtn.textContent = text;
+
+                    const dropdownInstance = bootstrap.Dropdown.getInstance(dropdownBtn);
+                    if (dropdownInstance) dropdownInstance.hide();
+                    previewHolder.classList.remove("visible");
+                });
+            });
+
+            const coachDropdownBtn = document.getElementById("coachDropdownBtn");
+            const coachHiddenInput = document.getElementById("hidden-coach-id");
+            const coachPreviewHolder = document.getElementById("coach-preview-holder");
+            const coachPopupImg = document.getElementById("coach-popup-img");
+            const coachHoverItems = document.querySelectorAll(".coach-hover-item");
+
+            coachHoverItems.forEach(item => {
+                item.addEventListener("mouseenter", function () {
+                    const imgUrl = this.getAttribute("data-img");
+                    if (imgUrl) {
+                        coachPopupImg.src = imgUrl;
+                        coachPreviewHolder.classList.add("visible");
+                    } else {
+                        coachPreviewHolder.classList.remove("visible");
+                    }
+                });
+
+                item.addEventListener("mouseleave", function () {
+                    coachPreviewHolder.classList.remove("visible");
+                });
+
+                item.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    const value = this.getAttribute("data-value");
+                    const text = this.textContent.trim();
+
+                    coachHiddenInput.value = value;
+                    coachDropdownBtn.textContent = text;
+
+                    const dropdownInstance = bootstrap.Dropdown.getInstance(coachDropdownBtn);
+                    if (dropdownInstance) dropdownInstance.hide();
+                    coachPreviewHolder.classList.remove("visible");
+                });
+            });
+        });
+    </script>
+}

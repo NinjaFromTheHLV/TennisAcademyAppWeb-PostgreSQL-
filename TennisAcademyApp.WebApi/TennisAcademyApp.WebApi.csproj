@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TennisAcademy.Data\TennisAcademyApp.Data.csproj" />
+    <ProjectReference Include="..\TennisAcademyApp.GCommon\TennisAcademyApp.GCommon.csproj" />
+    <ProjectReference Include="..\TennisAcademyApp.Services.Core\TennisAcademyApp.Services.Core.csproj" />
+    <ProjectReference Include="..\TennisAcademyApp.ViewModels\TennisAcademyApp.ViewModels.csproj" />
+  </ItemGroup>
+
+</Project>

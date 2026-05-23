@@ -1,0 +1,115 @@
+﻿@using TennisAcademyApp.ViewModels.Report;
+@model ReportsDashboardViewModel
+
+@{
+    var requestCulture = Context.Features.Get<Microsoft.AspNetCore.Localization.IRequestCultureFeature>();
+    var currentCulture = requestCulture?.RequestCulture.UICulture.Name ?? "en";
+    var isBg = currentCulture == "bg";
+
+    ViewData["Title"] = isBg ? "Бизнес отчети и анализи" : "Business Reports & Analysis";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">📊 @(isBg ? "Бизнес отчети на системата" : "System Business Reports")</h2>
+
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <form method="get" asp-action="Index" class="row g-3 align-items-end">
+                <div class="col-md-4">
+                    <label class="form-label font-weight-bold">@(isBg ? "Начална дата" : "Start Date")</label>
+                    <input type="date" name="fromDate" value="@Model.FromDate.ToString("yyyy-MM-dd")" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label font-weight-bold">@(isBg ? "Крайна дата" : "End Date")</label>
+                    <input type="date" name="toDate" value="@Model.ToDate.ToString("yyyy-MM-dd")" class="form-control" />
+                </div>
+                <div class="col-md-4 d-flex gap-2">
+                    <button type="submit" class="btn btn-dark w-50">
+                        @(isBg ? "Генерирай" : "Generate")
+                    </button>
+
+                    <a asp-action="ExportReportToJson"
+                       asp-route-fromDate="@Model.FromDate.ToString("yyyy-MM-dd")"
+                       asp-route-toDate="@Model.ToDate.ToString("yyyy-MM-dd")"
+                       class="btn btn-warning shadow-sm w-50 d-flex align-items-center justify-content-center gap-1 text-nowrap">
+                        📥 @(isBg ? "JSON Експорт" : "JSON Export")
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white text-center">
+                    <h5 class="mb-0">@(isBg ? "Заетост на кортовете" : "Court Utilization")</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>@(isBg ? "Тип корт (Настилка)" : "Court Type (Surface)")</th>
+                                <th class="text-end">@(isBg ? "Общо резервации" : "Total Reservations")</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var court in Model.CourtReports)
+                            {
+                                <tr>
+                                    <td>@(isBg ? (court.SurfaceNameBg ?? court.SurfaceName) : court.SurfaceName)</td>
+                                    <td class="text-end font-weight-bold text-primary">@court.TotalReservations</td>
+                                </tr>
+                            }
+                            @if (!Model.CourtReports.Any())
+                            {
+                                <tr>
+                                    <td colspan="2" class="text-center text-muted">
+                                        @(isBg ? "Няма налични данни за избрания период." : "No data available for the selected period.")
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white text-center">
+                    <h5 class="mb-0">@(isBg ? "Натовареност на треньорите" : "Coach Workload")</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>@(isBg ? "Теньор" : "Coach")</th>
+                                <th class="text-end">@(isBg ? "Общо тренировки" : "Total Trainings")</th>
+                                <th class="text-end">@(isBg ? "Общо минути" : "Total Minutes")</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var coach in Model.CoachReports)
+                            {
+                                <tr>
+                                    <td>@(isBg ? (coach.CoachNameBg ?? coach.CoachName) : coach.CoachName)</td>
+                                    <td class="text-end text-success font-weight-bold">@coach.TotalTrainings</td>
+                                    <td class="text-end">@coach.TotalDurationMinutes @(isBg ? "мин." : "min.")</td>
+                                </tr>
+                            }
+                            @if (!Model.CoachReports.Any())
+                            {
+                                <tr>
+                                    <td colspan="3" class="text-center text-muted">
+                                        @(isBg ? "Няма налични данни за избрания период." : "No data available for the selected period.")
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

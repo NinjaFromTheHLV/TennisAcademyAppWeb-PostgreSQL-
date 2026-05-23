@@ -1,0 +1,166 @@
+﻿@{
+    var requestCulture = Context.Features.Get<Microsoft.AspNetCore.Localization.IRequestCultureFeature>();
+    var currentCulture = requestCulture?.RequestCulture.UICulture.Name ?? "en";
+    var isBg = currentCulture == "bg";
+
+    ViewData["Title"] = isBg ? "Админ Панел" : "Admin Dashboard";
+}
+
+<style>
+    /* Специфични стилове за бруталния админ панел */
+    .admin-dashboard-wrapper {
+        padding: 20px 0;
+    }
+
+    /* Bento Grid разпределение за админ картите */
+    .admin-bento-grid {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 20px;
+        margin-top: 35px;
+    }
+
+    /* Изчистена стъклена карта */
+    .admin-action-card {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 20px;
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 180px;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        backdrop-filter: blur(10px);
+    }
+
+        /* Ховър ефекти със светлина */
+        .admin-action-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(204, 255, 0, 0.3);
+            background: rgba(255, 255, 255, 0.04);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+
+    /* Големи неонови икони */
+    .admin-card-icon {
+        font-size: 2.5rem;
+        color: var(--accent);
+        transition: all 0.3s ease;
+    }
+
+    .admin-action-card:hover .admin-card-icon {
+        text-shadow: 0 0 20px rgba(204, 255, 0, 0.6);
+        transform: scale(1.05);
+    }
+
+    /* Текст контроли */
+    .admin-card-title {
+        font-weight: 700;
+        color: #ffffff;
+        margin: 0;
+        font-size: 1.25rem;
+    }
+
+    .admin-card-desc {
+        font-size: 0.85rem;
+        color: rgba(255, 255, 255, 0.5);
+        margin-top: 5px;
+        margin-bottom: 0;
+    }
+
+    /* Размери на редовете за Bento Grid баланс */
+    .col-racket {
+        grid-column: span 4;
+    }
+
+    .col-ball {
+        grid-column: span 4;
+    }
+
+    .col-bag {
+        grid-column: span 4;
+    }
+
+    .col-coach {
+        grid-column: span 6;
+    }
+
+    .col-users {
+        grid-column: span 6;
+    }
+
+    /* Адаптивност за телефони и таблети */
+    @@media (max-width: 991px) {
+        .col-racket, .col-ball, .col-bag, .col-coach, .col-users {
+            grid-column: span 12;
+        }
+    }
+</style>
+
+<div class="container admin-dashboard-wrapper">
+
+    <div class="mb-4">
+        <span class="badge bg-dark border border-secondary border-opacity-25 text-white-50 px-3 py-2 rounded-pill mb-2 tracking-wider small">
+            <i class="bi bi-shield-fill text-warning me-1"></i> CONTROL PANEL
+        </span>
+        <h1 class="fw-bold text-light m-0">@(isBg ? "Админ Панел" : "Admin Dashboard")</h1>
+        <p class="text-muted m-0 mt-1">@(isBg ? "Управлявайте вашия магазин, треньори и потребители на едно място" : "Manage your store, coaches, and users in one place")</p>
+    </div>
+
+    <div class="admin-bento-grid">
+
+        <a asp-controller="RacketManagement" asp-action="Create" class="admin-action-card col-racket text-decoration-none">
+            <div>
+                <i class="bi bi-lightning-charge-fill admin-card-icon"></i>
+            </div>
+            <div>
+                <h5 class="admin-card-title">@(isBg ? "Добави Ракета" : "Add Racket")</h5>
+                <p class="admin-card-desc">@(isBg ? "Въвеждане на нови модели ракети" : "Insert new racket items into shop")</p>
+            </div>
+        </a>
+
+        <a asp-controller="BallManagement" asp-action="Create" class="admin-action-card col-ball text-decoration-none">
+            <div>
+                <i class="bi bi-record-circle-fill admin-card-icon"></i>
+            </div>
+            <div>
+                <h5 class="admin-card-title">@(isBg ? "Добави Топки" : "Add Balls")</h5>
+                <p class="admin-card-desc">@(isBg ? "Мениджмънт на кутии с тенис топки" : "Manage ball containers and stocks")</p>
+            </div>
+        </a>
+
+        <a asp-controller="BagManagement" asp-action="Create" class="admin-action-card col-bag text-decoration-none">
+            <div>
+                <i class="bi bi-backpack2-fill admin-card-icon"></i>
+            </div>
+            <div>
+                <h5 class="admin-card-title">@(isBg ? "Добави Сак" : "Add Bag")</h5>
+                <p class="admin-card-desc">@(isBg ? "Добавяне на професионални чанти" : "Add professional tennis bags")</p>
+            </div>
+        </a>
+
+        <a asp-controller="CoachManagement" asp-action="Add" class="admin-action-card col-coach text-decoration-none">
+            <div>
+                <i class="bi bi-person-plus-fill admin-card-icon" style="color: #00d2ff !important;"></i>
+            </div>
+            <div>
+                <h5 class="admin-card-title">@(isBg ? "Добави Треньор" : "Add Coach")</h5>
+                <p class="admin-card-desc">@(isBg ? "Създаване на нов треньорски профил към академията" : "Create a new pro coach profile for the academy")</p>
+            </div>
+        </a>
+
+        <a asp-controller="UserManagement" asp-action="Index" class="admin-action-card col-users text-decoration-none">
+            <div>
+                <i class="bi bi-people-fill admin-card-icon" style="color: #00d2ff !important;"></i>
+            </div>
+            <div>
+                <h5 class="admin-card-title">@(isBg ? "Потребители" : "Manage Users")</h5>
+                <p class="admin-card-desc">@(isBg ? "Списък, роли и права на регистрираните акаунти" : "View, assign roles, and handle registered user accounts")</p>
+            </div>
+        </a>
+
+    </div>
+</div>

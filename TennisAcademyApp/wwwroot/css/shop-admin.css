@@ -1,0 +1,113 @@
+﻿
+button.btn-add-shop-neon,
+a.btn-add-shop-neon,
+.btn.btn-add-shop-neon {
+    background: #ccff00 !important;
+    background-color: #ccff00 !important;
+    color: #000000 !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    border: none !important;
+    border-radius: 12px !important;
+    opacity: 1 !important;
+    transition: all 0.2s ease-in-out !important;
+    box-shadow: 0 4px 15px rgba(204, 255, 0, 0.4) !important;
+}
+
+    button.btn-add-shop-neon:hover,
+    a.btn-add-shop-neon:hover,
+    .btn.btn-add-shop-neon:hover {
+        background: #ffffff !important;
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4) !important;
+    }
+
+
+.admin-form-card {
+    background: rgba(255, 255, 255, 0.02) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    border-radius: 24px !important;
+    backdrop-filter: blur(15px);
+    padding: 40px !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5) !important;
+}
+
+
+.form-control.admin-input,
+.form-control.admin-input:focus {
+    background-color: rgba(0, 0, 0, 0.4) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 10px !important;
+    padding: 12px 16px;
+    transition: all 0.2s ease-in-out;
+}
+
+    .form-control.admin-input:focus {
+        border-color: var(--accent, #ccff00) !important;
+        box-shadow: 0 0 15px rgba(204, 255, 0, 0.15) !important;
+    }
+
+button.btn-submit-neon,
+.btn.btn-submit-neon {
+    background: #ccff00 !important;
+    background-color: #ccff00 !important;
+    color: #000000 !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px;
+    border: none !important;
+    border-radius: 12px !important;
+    opacity: 1 !important;
+    transition: all 0.2s ease-in-out !important;
+}
+
+    button.btn-submit-neon:hover,
+    .btn.btn-submit-neon:hover {
+        background: #ffffff !important;
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2) !important;
+    }
+
+
+.btn-cancel-outline {
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    text-transform: uppercase;
+    border-radius: 12px !important;
+    transition: all 0.2s ease-in-out !important;
+}
+
+    .btn-cancel-outline:hover {
+        background-color: rgba(255, 255, 255, 0.05) !important;
+        color: #ff3333 !important;
+        border-color: #ff3333 !important;
+    }
+
+button.btn-delete-danger-neon,
+.btn.btn-delete-danger-neon {
+    background: #ff3333 !important;
+    background-color: #ff3333 !important;
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    border: none !important;
+    border-radius: 12px !important;
+    opacity: 1 !important;
+    transition: all 0.2s ease-in-out !important;
+    box-shadow: 0 4px 15px rgba(255, 51, 51, 0.4) !important;
+}
+
+    button.btn-delete-danger-neon:hover,
+    .btn.btn-delete-danger-neon:hover {
+        background: #ffffff !important;
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4) !important;
+    }

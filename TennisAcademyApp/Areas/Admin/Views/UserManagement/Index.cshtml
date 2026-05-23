@@ -1,0 +1,138 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using TennisAcademyApp.ViewModels.Admin.UserManagement
+@model IEnumerable<UserIndexViewModel>
+@inject RoleManager<IdentityRole> roleManager
+
+@{
+    var requestCulture = Context.Features.Get<Microsoft.AspNetCore.Localization.IRequestCultureFeature>();
+    var currentCulture = requestCulture?.RequestCulture.UICulture.Name ?? "en";
+    var isBg = currentCulture == "bg";
+
+    ViewData["Title"] = isBg ? "Управление на потребители" : "User Management";
+}
+
+<link rel="stylesheet" href="~/css/user.css" asp-append-version="true" />
+
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show w-100 rounded-0 text-center mb-0" role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i> @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show w-100 rounded-0 text-center mb-0" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i> @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="container py-4">
+    <div class="mb-4 text-center text-md-start">
+        <span class="badge bg-dark border border-secondary border-opacity-25 text-white-50 px-3 py-2 rounded-pill mb-2 tracking-wider small">
+            <i class="bi bi-shield-lock-fill text-warning me-1"></i> SECURITY ACCESS
+        </span>
+        <h2 class="fw-bold text-light m-0">@(isBg ? "Управление на потребители" : "User Management")</h2>
+    </div>
+
+    <div class="row g-3">
+        @if (Model != null && Model.Any())
+        {
+            foreach (var user in Model)
+            {
+                <div class="col-12">
+                    <div class="card bg-card border-0 shadow-sm rounded-4 p-3 toggle-card">
+                        <div class="row align-items-center g-3">
+
+                            <div class="col-md-3 border-end border-secondary border-opacity-10">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="bg-primary bg-opacity-10 p-2.5 rounded-3 text-primary">
+                                        <i class="bi bi-person-bounding-box fs-4"></i>
+                                    </div>
+                                    <div class="text-truncate">
+                                        <span class="text-muted d-block small">USER EMAIL</span>
+                                        <span class="fw-semibold text-light text-truncate d-block">@user.Email</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 border-end border-secondary border-opacity-10 px-md-4">
+                                <span class="text-muted d-block small mb-1">@(isBg ? "Текущи роли" : "Current Roles")</span>
+                                <div class="d-flex flex-wrap gap-1">
+                                    @if (user.Roles.Any())
+                                    {
+                                        foreach (var role in user.Roles)
+                                        {
+                                            <span class="badge badge-role px-2.5 py-1.5 rounded-2 small fw-bold">@role</span>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span class="text-white-50 small">@(isBg ? "Няма роли" : "No roles assigned")</span>
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 border-end border-secondary border-opacity-10 px-md-4">
+                                <div class="d-flex flex-column gap-2">
+
+                                    <form method="post" asp-action="AssignRole" asp-controller="UserManagement" asp-area="Admin" class="d-flex gap-2 align-items-center">
+                                        <input type="hidden" name="userId" value="@user.Id" />
+                                        <select name="role" class="form-select form-select-sm admin-select py-1.5">
+                                            @foreach (var role in user.AllExistingRoles)
+                                            {
+                                                <option value="@role">@role</option>
+                                            }
+                                        </select>
+                                        <button type="submit" class="btn btn-outline-success btn-sm px-3 py-1.5 text-uppercase fw-bold text-nowrap w-100" style="font-size: 0.75rem; max-width: 100px;">
+                                            <i class="bi bi-plus-circle-fill me-1"></i>@(isBg ? "Назначи" : "Assign")
+                                        </button>
+                                    </form>
+
+                                    @if (user.Roles.Any())
+                                    {
+                                        <form method="post" asp-action="RemoveRole" asp-controller="UserManagement" asp-area="Admin" class="d-flex gap-2 align-items-center">
+                                            <input type="hidden" name="userId" value="@user.Id" />
+                                            <select name="role" class="form-select form-select-sm admin-select py-1.5">
+                                                @foreach (var role in user.Roles)
+                                                {
+                                                    <option value="@role">@role</option>
+                                                }
+                                            </select>
+                                            <button type="submit" class="btn btn-outline-warning btn-sm px-3 py-1.5 text-uppercase fw-bold text-nowrap w-100" style="font-size: 0.75rem; max-width: 100px;">
+                                                <i class="bi bi-dash-circle-fill me-1"></i>@(isBg ? "Махни" : "Remove")
+                                            </button>
+                                        </form>
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="col-md-2 text-md-end text-center">
+                                <form method="post" asp-action="DeleteUser" asp-controller="UserManagement" asp-area="Admin"
+                                      onsubmit="return confirm('@(isBg ? "Сигурни ли сте, че искате да изтриете този потребител?" : "Are you sure you want to delete this user?")');">
+                                    <input type="hidden" name="userId" value="@user.Id" />
+                                    <button type="submit" class="btn btn-outline-danger btn-sm px-3 py-2 rounded-3 w-100">
+                                        <i class="bi bi-trash3-fill me-1"></i>@(isBg ? "Изтрий" : "Delete")
+                                    </button>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12">
+                <div class="alert alert-info text-center border-0 rounded-3 p-4">
+                    <i class="bi bi-people fs-3 d-block mb-2"></i>
+                    @(isBg ? "Няма намерени потребители." : "No users found.")
+                </div>
+            </div>
+        }
+    </div>
+</div>

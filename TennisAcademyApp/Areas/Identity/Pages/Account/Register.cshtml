@@ -1,0 +1,70 @@
+﻿@page
+@model RegisterModel
+@{
+    var requestCulture = ViewContext.HttpContext.Features.Get<Microsoft.AspNetCore.Localization.IRequestCultureFeature>();
+    var currentCulture = requestCulture?.RequestCulture.UICulture.Name ?? "en";
+    var isBg = currentCulture == "bg";
+
+    ViewData["Title"] = isBg ? "Регистрация" : "Register";
+}
+
+<div class="row justify-content-center align-items-center mt-5">
+    <div class="col-md-5">
+        <div class="card shadow-lg border-0 rounded-4 p-4">
+            <div class="card-body">
+                <div class="text-center mb-4">
+                    <i class="bi bi-person-plus text-primary fs-1"></i>
+                    <h2 class="fw-semibold mt-2">@(isBg ? "Създай профил" : "Create an Account")</h2>
+                    <p class="text-muted small">@(isBg ? "Въведете данните си, за да се регистрирате" : "Enter your details to register")</p>
+                </div>
+
+                <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="form-floating">
+                                <input asp-for="Input.FirstName" class="form-control rounded-3" aria-required="true" placeholder="John" />
+                                <label asp-for="Input.FirstName">@(isBg ? "Име" : "First Name")</label>
+                                <span asp-validation-for="Input.FirstName" class="text-danger small"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="form-floating">
+                                <input asp-for="Input.LastName" class="form-control rounded-3" aria-required="true" placeholder="Doe" />
+                                <label asp-for="Input.LastName">@(isBg ? "Фамилия" : "Last Name")</label>
+                                <span asp-validation-for="Input.LastName" class="text-danger small"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.Email" class="form-control rounded-3" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                        <label asp-for="Input.Email">Email</label>
+                        <span asp-validation-for="Input.Email" class="text-danger small"></span>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.Password" class="form-control rounded-3" autocomplete="new-password" aria-required="true" placeholder="password" />
+                        <label asp-for="Input.Password">@(isBg ? "Парола" : "Password")</label>
+                        <span asp-validation-for="Input.Password" class="text-danger small"></span>
+                    </div>
+
+                    <div class="form-floating mb-4">
+                        <input asp-for="Input.ConfirmPassword" class="form-control rounded-3" autocomplete="new-password" aria-required="true" placeholder="password" />
+                        <label asp-for="Input.ConfirmPassword">@(isBg ? "Потвърди парола" : "Confirm Password")</label>
+                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger small"></span>
+                    </div>
+
+                    <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-success py-2.5 rounded-3 fw-bold">
+                        @(isBg ? "Регистрация" : "Register")
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

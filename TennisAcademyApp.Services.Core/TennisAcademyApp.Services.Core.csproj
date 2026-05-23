@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DeepL.net" Version="1.21.0" />
+    <PackageReference Include="GTranslate" Version="2.3.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.16" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TennisAcademy.Data.Models\TennisAcademyApp.Data.Models.csproj" />
+    <ProjectReference Include="..\TennisAcademy.Data\TennisAcademyApp.Data.csproj" />
+    <ProjectReference Include="..\TennisAcademyApp.ViewModels\TennisAcademyApp.ViewModels.csproj" />
+  </ItemGroup>
+
+</Project>

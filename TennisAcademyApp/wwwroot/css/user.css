@@ -1,0 +1,40 @@
+﻿
+.admin-select {
+    background-color: rgba(0, 0, 0, 0.4) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 8px !important;
+}
+
+    .admin-select option {
+        background-color: #1a1a1a !important;
+        color: #ffffff !important;
+    }
+
+.badge-role {
+    background-color: rgba(0, 210, 255, 0.1) !important;
+    color: #00d2ff !important;
+    border: 1px solid rgba(0, 210, 255, 0.2) !important;
+}
+
+a.btn-assign-neon,
+button.btn-assign-neon,
+.btn.btn-assign-neon {
+    background: #ccff00 !important;
+    background-color: #ccff00 !important;
+    color: #000000 !important;
+    font-weight: 800 !important;
+    border: none !important;
+    opacity: 1 !important;
+    box-shadow: 0 4px 12px rgba(204, 255, 0, 0.2) !important;
+}
+
+    a.btn-assign-neon:hover,
+    button.btn-assign-neon:hover,
+    .btn.btn-assign-neon:hover {
+        background: #ffffff !important;
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        transform: scale(1.03) !important;
+        box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4) !important;
+    }

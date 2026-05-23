@@ -1,0 +1,319 @@
+html {
+  font-size: 14px;
+}
+
+
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+    background-color: #f8f9fa;
+}
+
+/* Coach Details css */
+.coach-card {
+    max-width: 800px;
+    margin: auto;
+    background: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+}
+
+    .coach-card img {
+        object-fit: cover;
+        height: 100%;
+        width: 100%;
+    }
+
+    .coach-card .card-body {
+        padding: 2rem;
+    }
+
+    .coach-card .btn {
+        min-width: 120px;
+    }
+
+/* Coach Input model */
+.form-wrapper {
+    padding: 2rem;
+    border-color: black;
+    border-radius: 1rem;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Edit Coach css */
+.edit-form-wrapper {
+    max-width: 800px;
+    margin: 40px auto;
+    background-color: #fff;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* Delete coach css */
+.delete-card {
+    max-width: 700px;
+    margin: 40px auto;
+    background-color: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+    .delete-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+.delete-body {
+    padding: 2rem;
+}
+
+    .delete-body h3 {
+        color: #dc3545;
+        margin-bottom: 1rem;
+    }
+
+.delete-actions .btn {
+    min-width: 120px;
+}
+/* Home page css */
+.hero {
+    position: relative;
+    min-height: 90vh;
+    background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url('https://media.istockphoto.com/id/181100251/photo/tennis-racket-and-ball-on-dark-background.jpg?s=612x612&w=0&k=20&c=6OV76oya4MGVZiUQ2gBZC77Ix9r49Qt6pVOObgbMCrQ=') no-repeat center center;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+    padding: 2rem;
+}
+
+    .hero h1 {
+        font-size: 3.5rem;
+        font-weight: 800;
+        text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+        margin-bottom: 1rem;
+    }
+
+    .hero p {
+        font-size: 1.25rem;
+        margin-bottom: 2rem;
+    }
+
+.features {
+    padding: 4rem 0;
+    background-color: #f8f9fa;
+}
+
+.feature-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    padding: 2rem;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    .feature-card img {
+        max-width: 100px;
+        margin-bottom: 1rem;
+    }
+
+/* Admin Dashboard */
+.admin-hero {
+    position: relative;
+    min-height: 100vh;
+    background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url('https://images.unsplash.com/photo-1600373564975-e355c50cb9bb') center/cover no-repeat;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+    padding: 2rem;
+}
+
+    .admin-hero h1 {
+        font-weight: 800;
+        font-size: 3rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .admin-hero p {
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+    }
+
+.admin-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    width: 100%;
+    max-width: 900px;
+}
+
+.admin-card {
+    background: rgba(255,255,255,0.15);
+    padding: 1.5rem;
+    border-radius: 12px;
+    text-align: center;
+    color: white;
+    text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.25);
+    backdrop-filter: blur(5px);
+    transition: background 0.3s, transform 0.3s;
+}
+
+    .admin-card:hover {
+        background: rgba(255,255,255,0.25);
+        transform: translateY(-3px);
+    }
+
+    .admin-card img {
+        max-width: 60px;
+        margin-bottom: 0.8rem;
+    }
+
+:root {
+    --bg-main: #0B0F19;
+    --bg-card: #151D30;
+    --text-main: #F3F4F6;
+    --text-muted: #9CA3AF;
+    --accent: #CCFF00;
+    --accent-hover: #B3E600;
+    --border-color: #24324F; 
+    --border-radius: 12px; 
+}
+
+body {
+    background-color: var(--bg-main) !important;
+    color: var(--text-main) !important;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.navbar {
+    background-color: var(--bg-card) !important;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.navbar-brand, .nav-link {
+    color: var(--text-main) !important;
+}
+
+    .nav-link:hover {
+        color: var(--accent) !important;
+    }
+
+.card {
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: var(--border-radius) !important;
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease !important;
+}
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(204, 255, 0, 0.15) !important;
+        border-color: var(--accent) !important;
+    }
+
+.card-title {
+    color: var(--text-main) !important;
+}
+
+.text-muted {
+    color: var(--text-muted) !important;
+}
+
+.btn-success, .btn-primary {
+    background-color: var(--accent) !important;
+    border-color: var(--accent) !important;
+    color: #0B0F19 !important;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+    .btn-success:hover, .btn-primary:hover {
+        background-color: var(--accent-hover) !important;
+        border-color: var(--accent-hover) !important;
+        transform: scale(1.02);
+    }
+
+.btn-outline-primary {
+    color: var(--text-main) !important;
+    border-color: var(--border-color) !important;
+    background-color: transparent !important;
+}
+
+    .btn-outline-primary:hover {
+        background-color: var(--bg-card) !important;
+        border-color: var(--accent) !important;
+        color: var(--accent) !important;
+    }
+
+.table {
+    color: var(--text-main) !important;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(255, 255, 255, 0.02) !important;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(204, 255, 0, 0.05) !important;
+}
+
+.card-header {
+    background-color: #1A243D !important;
+    border-bottom: 1px solid var(--border-color) !important;
+}
+
+.form-control {
+    background-color: #0F1524 !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-main) !important;
+    border-radius: 8px;
+}
+
+    .form-control:focus {
+        border-color: var(--accent) !important;
+        box-shadow: 0 0 0 0.25rem rgba(204, 255, 0, 0.25) !important;
+    }
+
+.form-label {
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.alert-success {
+    background-color: rgba(204, 255, 0, 0.1) !important;
+    border: 1px solid var(--accent) !important;
+    color: var(--accent) !important;
+}

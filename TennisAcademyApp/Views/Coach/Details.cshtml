@@ -1,0 +1,120 @@
+﻿@using TennisAcademyApp.ViewModels.Coach;
+@model CoachDetailsViewModel;
+
+@{
+    var requestCulture = ViewContext.HttpContext.Features.Get<Microsoft.AspNetCore.Localization.IRequestCultureFeature>();
+    var currentCulture = requestCulture?.RequestCulture.UICulture.Name ?? "en";
+    var isBg = currentCulture == "bg";
+
+    ViewData["Title"] = isBg ? "Детайли за треньора" : "Coach Details";
+}
+
+<link rel="stylesheet" href="~/css/coach.css" asp-append-version="true" />
+
+<div class="container mt-4">
+    <div class="card shadow border-0 rounded-4 overflow-hidden mb-5">
+        <div class="row g-0">
+            <div class="col-md-5">
+                <img src="@Url.Content(Model.ImageUrl)" alt="Coach image" class="img-fluid h-100 object-fit-cover" style="min-height: 400px; width: 100%;" />
+            </div>
+            <div class="col-md-7">
+                <div class="card-body p-4 d-flex flex-column justify-content-between h-100">
+                    <div>
+                        <h2 class="fw-bold mb-3">@(isBg ? (Model.CoachNameBg ?? Model.CoachName) : Model.CoachName)</h2>
+                        <hr class="border-secondary opacity-25 mb-4" />
+
+                        <div class="d-flex flex-column gap-3">
+                            <p class="mb-0">
+                                <i class="bi bi-calendar3 text-primary me-2"></i>
+                                <strong>@(isBg ? "Възраст:" : "Age:")</strong> @Model.CoachAge @(isBg ? "години" : "years old")
+                            </p>
+                            <p class="mb-0">
+                                <i class="bi bi-globe text-primary me-2"></i>
+                                <strong>@(isBg ? "Националност:" : "Nationality:")</strong> @(isBg ? (Model.NationalityBg ?? Model.Nationality) : Model.Nationality)
+                            </p>
+                            <p class="mb-0">
+                                <i class="bi bi-file-text text-primary me-2"></i>
+                                <strong>@(isBg ? "Описание:" : "Description:")</strong>
+                                <span class="d-block text-muted mt-1 ps-4">@(isBg ? (Model.DescriptionBg ?? Model.Description) : Model.Description)</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mt-5 d-flex flex-wrap gap-3">
+                        @if (User?.Identity?.IsAuthenticated == true && Model.IsInUserFavorites == false)
+                        {
+                            <form asp-controller="FavouriteCoach" asp-action="AddToFavourites" asp-route-id="@Model.CoachId" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-warning px-4 py-2 fw-semibold">
+                                    <i class="bi bi-star-fill me-2"></i>@(isBg ? "Добави в любими" : "Add to favourites")
+                                </button>
+                            </form>
+                        }
+                        <a asp-action="Index" class="btn btn-outline-primary px-4 py-2">
+                            <i class="bi bi-arrow-left me-2"></i>@(isBg ? "Назад към списъка" : "Back to List")
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow border-0 rounded-4 overflow-hidden mb-5">
+        <div class="card-header bg-light border-bottom p-3 d-flex justify-content-between align-items-center">
+            <h4 class="mb-0 fw-semibold"><i class="bi bi-calendar-week text-primary me-2"></i>@(isBg ? "График на треньора" : "Coach Schedule")</h4>
+            <button id="toggleScheduleBtn" class="btn btn-primary" onclick="toggleSchedule()">
+                @(isBg ? "Виж графика" : "View Schedule")
+            </button>
+        </div>
+
+        <div id="scheduleSection" class="schedule-collapse">
+            <div class="card-body p-4">
+                @if (Model.CoachReservations == null || !Model.CoachReservations.Any())
+                {
+                    <div class="alert alert-info text-center border-0 mb-0 rounded-3">
+                        <i class="bi bi-info-circle me-2"></i>@(isBg ? "Този треньор в момента няма насрочени уроци." : "This coach currently has no scheduled lessons.")
+                    </div>
+                }
+                else
+                {
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="px-3">@(isBg ? "Дата и час" : "Date & Time")</th>
+                                    <th class="px-3">@(isBg ? "Тип тренировка" : "Training Type")</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var res in Model.CoachReservations)
+                                {
+                                    <tr>
+                                        <td class="px-3 text-muted">@res.Date</td>
+                                        <td class="px-3 fw-bold">@(isBg ? (res.TrainingTypeNameBg ?? res.TrainingTypeName) : res.TrainingTypeName)</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleSchedule() {
+        const section = document.getElementById('scheduleSection');
+        const btn = document.getElementById('toggleScheduleBtn');
+        const isBg = @Json.Serialize(isBg);
+
+        section.classList.toggle('show');
+
+        if (section.classList.contains('show')) {
+            btn.textContent = isBg ? "Скрий графика" : "Hide Schedule";
+            btn.classList.replace('btn-primary', 'btn-outline-secondary');
+        } else {
+            btn.textContent = isBg ? "Виж графика" : "View Schedule";
+            btn.classList.replace('btn-outline-secondary', 'btn-primary');
+        }
+    }
+</script>

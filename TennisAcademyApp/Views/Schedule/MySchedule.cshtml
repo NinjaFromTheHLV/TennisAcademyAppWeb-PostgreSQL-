@@ -1,0 +1,151 @@
+﻿@using TennisAcademyApp.ViewModels.Coach
+@model IEnumerable<CoachScheduleViewModel>
+
+@{
+    var requestCulture = Context.Features.Get<Microsoft.AspNetCore.Localization.IRequestCultureFeature>();
+    var currentCulture = requestCulture?.RequestCulture.UICulture.Name ?? "en";
+    var isBg = currentCulture == "bg";
+
+    ViewData["Title"] = isBg ? "Моят Календар" : "My Schedule";
+
+    var sessionsByDate = Model.ToLookup(s => s.Date.Date);
+    var today = DateTime.Today;
+
+    var monthsToDisplay = new List<DateTime>
+    {
+        new DateTime(today.Year, today.Month, 1),
+        new DateTime(today.Year, today.Month, 1).AddMonths(1),
+        new DateTime(today.Year, today.Month, 1).AddMonths(2)
+    };
+
+    var daysOfWeek = isBg
+        ? new[] { "Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Нд" }
+        : new[] { "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" };
+}
+
+<link rel="stylesheet" href="~/css/shop.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/schedule.css" asp-append-version="true" />
+
+<div class="container py-5">
+
+    <div class="text-center mb-4">
+        <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill mb-2 tracking-wider small fw-bold">
+            <i class="bi bi-calendar3 text-primary me-1"></i> @(isBg ? "ТАКТИЧЕСКИ ПАНЕЛ" : "TACTICAL PANEL")
+        </span>
+        <h2 class="fw-bold text-light m-0 display-5">@(isBg ? "Треньорски Календар" : "Coach Calendar")</h2>
+    </div>
+
+    <div class="card bg-card border-0 shadow-lg rounded-4 overflow-hidden main-calendar-wrapper">
+
+        <div class="card-header bg-black bg-opacity-40 border-0 p-4 d-flex align-items-center justify-content-between">
+            <button class="btn btn-outline-light rounded-circle calendar-nav-btn" id="prevMonthBtn" type="button">
+                <i class="bi bi-chevron-left"></i>
+            </button>
+
+            <h3 class="text-accent fw-bold m-0 text-uppercase tracking-wide" id="calendarMonthTitle">
+                @monthsToDisplay[0].ToString("MMMM yyyy", new System.Globalization.CultureInfo(currentCulture))
+            </h3>
+
+            <button class="btn btn-outline-light rounded-circle calendar-nav-btn" id="nextMonthBtn" type="button">
+                <i class="bi bi-chevron-right"></i>
+            </button>
+        </div>
+
+        <div class="card-body p-4">
+            <div class="tab-content" id="monthsTabContent">
+                @for (int m = 0; m < monthsToDisplay.Count; m++)
+                {
+                    var startOfMonth = monthsToDisplay[m];
+                    var daysInMonth = DateTime.DaysInMonth(startOfMonth.Year, startOfMonth.Month);
+                    int dayOfWeekVal = ((int)startOfMonth.DayOfWeek - 1 + 7) % 7;
+                    var isActive = m == 0 ? "show active" : "";
+
+                    <div class="tab-pane fade @isActive" id="month-@m" role="tabpanel" data-month-title="@startOfMonth.ToString("MMMM yyyy", new System.Globalization.CultureInfo(currentCulture))">
+                        <div class="calendar-grid">
+
+                            @foreach (var dayName in daysOfWeek)
+                            {
+                                <div class="calendar-day-header text-white-50 fw-bold text-center py-2 small text-uppercase">
+                                    @dayName
+                                </div>
+                            }
+
+                            @for (int i = 0; i < dayOfWeekVal; i++)
+                            {
+                                <div class="calendar-day empty"></div>
+                            }
+
+                            @for (int day = 1; day <= daysInMonth; day++)
+                            {
+                                var currentCalendarDate = new DateTime(startOfMonth.Year, startOfMonth.Month, day);
+                                var hasSessions = sessionsByDate.Contains(currentCalendarDate);
+                                var daySessions = sessionsByDate[currentCalendarDate].OrderBy(s => s.Date).ToList();
+                                var isToday = currentCalendarDate == today;
+
+                                <div class="calendar-day @(hasSessions ? "has-events" : "") @(isToday ? "is-today" : "")">
+                                    <span class="day-number fw-bold">@day</span>
+
+                                    @if (hasSessions)
+                                    {
+                                        <div class="events-container mt-1">
+                                            @foreach (var session in daySessions)
+                                            {
+                                                <div class="calendar-event-badge" data-bs-toggle="tooltip" data-bs-html="true"
+                                                     title="<strong>@session.PlayerName</strong><br/><i class='bi bi-clock'></i> @session.Date.ToString("HH:mm") (@session.Duration мин)<br/><i class='bi bi-layers'></i> @(isBg? session.SurfaceNameBg: session.SurfaceName)">
+                                                    <span class="event-time fw-bold text-accent">@session.Date.ToString("HH:mm")</span>
+                                                    <span class="event-title text-truncate">@(isBg? session.TrainingTypeNameBg: session.TrainingTypeName)</span>
+                                                </div>
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (el) { return new bootstrap.Tooltip(el); });
+
+            let currentIdx = 0;
+            const maxIdx = 2;
+
+            const prevBtn = document.getElementById("prevMonthBtn");
+            const nextBtn = document.getElementById("nextMonthBtn");
+            const titleEl = document.getElementById("calendarMonthTitle");
+
+            function updateNavigation() {
+ 
+                prevBtn.style.visibility = currentIdx === 0 ? "hidden" : "visible";
+                nextBtn.style.visibility = currentIdx === maxIdx ? "hidden" : "visible";
+
+                for (let i = 0; i <= maxIdx; i++) {
+                    const pane = document.getElementById(`month-${i}`);
+                    if (i === currentIdx) {
+                        pane.classList.add("show", "active");
+                        titleEl.textContent = pane.getAttribute("data-month-title");
+                    } else {
+                        pane.classList.remove("show", "active");
+                    }
+                }
+            }
+
+            prevBtn.addEventListener("click", function() {
+                if (currentIdx > 0) { currentIdx--; updateNavigation(); }
+            });
+
+            nextBtn.addEventListener("click", function() {
+                if (currentIdx < maxIdx) { currentIdx++; updateNavigation(); }
+            });
+
+            updateNavigation();
+        });
+    </script>
+}

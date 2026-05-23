@@ -1,0 +1,157 @@
+﻿@{
+    var requestCulture = Context.Features.Get<Microsoft.AspNetCore.Localization.IRequestCultureFeature>();
+    var currentCulture = requestCulture?.RequestCulture.UICulture.Name ?? "en";
+    var isBg = currentCulture == "bg";
+
+    ViewData["Title"] = isBg ? "Колело на Късмета" : "Wheel of Fortune";
+    bool canSpin = ViewBag.CanSpin ?? false;
+}
+
+<link rel="stylesheet" href="~/css/wheel.css" />
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<div class="wheel-page-container">
+    <div class="bg-glow"></div>
+
+    <div class="content-wrap">
+        <h1 class="main-title">@(isBg ? "Завърти и Спечели" : "Wheel of Luck")</h1>
+        <p class="subtitle">@(isBg ? "Имаш право на 1 завъртане на всеки 7 дни." : "You can spin once every 7 days.")</p>
+
+        <div class="wheel-scene">
+            <div class="wheel-pointer"><div class="pointer-inner"></div></div>
+
+            <canvas id="wheelCanvas" width="400" height="400"></canvas>
+
+            @if (canSpin)
+            {
+                <button id="spinBtnCenter" class="center-btn pulse" onclick="spinWheel()">
+                    @(isBg ? "ЗАВЪРТИ" : "SPIN")
+                </button>
+            }
+            else
+            {
+                <button class="center-btn disabled" disabled>
+                    <i class="fa-solid fa-lock"></i>
+                </button>
+            }
+        </div>
+
+        @if (!canSpin)
+        {
+            <div class="info-box">
+                <i class="fa-solid fa-clock-rotate-left" style="color: #ccff00;"></i>
+                <span>@(isBg ? "Следващо завъртане:" : "Next spin:")</span>
+                <span class="next-date">@ViewBag.NextSpinDate</span>
+            </div>
+        }
+    </div>
+</div>
+
+<script>
+    let isSpinning = false;
+    const isBg = @isBg.ToString().ToLower();
+
+    const texts = {
+        try: isBg ? "ОПИТАЙ ПАК" : "TRY AGAIN",
+        win: isBg ? "ПОЗДРАВЛЕНИЯ!" : "CONGRATS!",
+        lose: isBg ? "УВИ..." : "OOPS...",
+        wonText: isBg ? "Спечели: " : "You won: ",
+        btnCart: isBg ? "КЪМ КОЛИЧКАТА" : "TO CART",
+        btnOk: isBg ? "РАЗБРАХ" : "GOT IT"
+    };
+
+    const canvas = document.getElementById("wheelCanvas");
+    const ctx = canvas.getContext("2d");
+
+    const prizes = ["@ViewBag.RacketName", texts.try, "@ViewBag.BallName", texts.try, "@ViewBag.BagName", texts.try];
+    const prizeImages = { 0: "@ViewBag.RacketImg", 2: "@ViewBag.BallImg", 4: "@ViewBag.BagImg" };
+
+    function draw() {
+        const slice = (Math.PI * 2) / 6;
+        ctx.clearRect(0,0,400,400);
+
+        prizes.forEach((p, i) => {
+            const angle = i * slice;
+
+            ctx.beginPath();
+            ctx.moveTo(200, 200);
+            ctx.arc(200, 200, 200, angle, angle + slice);
+
+            const grad = ctx.createRadialGradient(200,200,50, 200,200,200);
+            if (i % 2 === 0) {
+                grad.addColorStop(0, '#ccff00'); grad.addColorStop(1, '#99cc00');
+            } else {
+                grad.addColorStop(0, '#1a1a1a'); grad.addColorStop(1, '#000000');
+            }
+            ctx.fillStyle = grad;
+            ctx.fill();
+            ctx.strokeStyle = "rgba(255,255,255,0.05)";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            ctx.save();
+            ctx.translate(200, 200);
+            ctx.rotate(angle + slice/2);
+            ctx.textAlign = "right";
+            ctx.fillStyle = (i % 2 === 0) ? "#000" : "#fff";
+            ctx.font = "bold 15px Arial";
+            ctx.shadowColor = "rgba(0,0,0,0.3)";
+            ctx.shadowBlur = 5;
+            ctx.fillText(p.substring(0, 15), 180, 5);
+            ctx.restore();
+        });
+    }
+    draw();
+
+    function spinWheel() {
+        if (isSpinning) return;
+        isSpinning = true;
+        const btn = document.getElementById('spinBtnCenter');
+        btn.disabled = true;
+        btn.classList.remove('pulse');
+
+        fetch('@Url.Action("Spin", "Wheel")', { method: 'POST' })
+            .then(async r => {
+                if (!r.ok) throw new Error(await r.text());
+                return r.json();
+            })
+            .then(data => {
+                const sliceDeg = 360 / 6;
+                const extraSpins = 10 * 360;
+                const randomOffset = Math.random() * 40 - 20;
+                const stopAngle = extraSpins + 270 - (data.winningIndex * sliceDeg + (sliceDeg / 2)) + randomOffset;
+
+                canvas.style.transform = `rotate(${stopAngle}deg)`;
+
+                setTimeout(() => {
+                    if ([1, 3, 5].includes(data.winningIndex)) {
+                        Swal.fire({
+                            title: texts.lose,
+                            html: `<div style="font-size: 5rem;">☹️</div><p style="opacity: 0.7">Няма късмет този път. Опитай отново след 7 дни!</p>`,
+                            confirmButtonText: texts.btnOk,
+                            customClass: { popup: 'premium-popup', confirmButton: 'win-btn' }
+                        }).then(() => location.reload());
+                    } else {
+                        Swal.fire({
+                            title: texts.win,
+                            html: `<h2 style="color:#ccff00; margin: 15px 0;">${data.prize}</h2><p>${texts.wonText}</p>`,
+                            imageUrl: prizeImages[data.winningIndex],
+                            imageWidth: 200,
+                            confirmButtonText: texts.btnCart,
+                            customClass: { popup: 'premium-popup', title: 'win-title', confirmButton: 'win-btn' }
+                        }).then(() => location.reload());
+
+                        confetti({ particleCount: 250, spread: 80, origin: { y: 0.6 }, colors: ['#ccff00', '#ffffff'] });
+                    }
+                }, 6200);
+            })
+            .catch(() => {
+                isSpinning = false;
+                btn.disabled = false;
+                btn.classList.add('pulse');
+                alert("Възникна грешка, моля опитайте пак.");
+            });
+    }
+</script>

@@ -1,0 +1,137 @@
+﻿@using TennisAcademyApp.ViewModels.Reservation;
+@model IEnumerable<ReservationIndexViewModel>
+
+@{
+    var requestCulture = ViewContext.HttpContext.Features.Get<Microsoft.AspNetCore.Localization.IRequestCultureFeature>();
+    var currentCulture = requestCulture?.RequestCulture.UICulture.Name ?? "en";
+    var isBg = currentCulture == "bg";
+
+    ViewData["Title"] = isBg ? "Моите Резервации" : "My Reservations";
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show w-100 rounded-0 text-center mb-0" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show w-100 rounded-0 text-center mb-0" role="alert">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="d-flex justify-content-between align-items-center my-4">
+    <h2 class="fw-semibold">@(isBg ? "Моите Резервации" : "My Reservations")</h2>
+
+    <div class="d-flex gap-2">
+        <a asp-action="Index"
+           asp-route-sortOrder="@ViewData["DateSortParam"]"
+           asp-route-searchTerm="@ViewData["CurrentSearch"]"
+           asp-route-fromDate="@ViewData["FromDate"]"
+           asp-route-toDate="@ViewData["ToDate"]"
+           class="btn btn-outline-primary d-flex align-items-center gap-2">
+            <i class="bi bi-sort-down"></i> @(isBg ? "Сортирай по дата" : "Sort by Date") @(ViewData["CurrentSort"]?.ToString() == "date_desc" ? "▼" : "▲")
+        </a>
+        <a asp-action="ExportToJson"
+           asp-route-searchTerm="@ViewData["CurrentSearch"]"
+           asp-route-fromDate="@ViewData["FromDate"]"
+           asp-route-toDate="@ViewData["ToDate"]"
+           class="btn btn-warning d-flex align-items-center gap-2">
+            <i class="bi bi-download"></i> @(isBg ? "JSON" : "JSON")
+        </a>
+    </div>
+</div>
+
+<div class="card bg-card border-0 shadow-sm mb-4 rounded-4">
+    <div class="card-body p-4">
+        <form method="get" asp-action="Index">
+            <div class="row g-3 align-items-end">
+                <div class="col-md-4">
+                    <label class="form-label text-muted small fw-medium">@(isBg ? "Търсене (Треньор)" : "Search (Coach)")</label>
+                    <input type="text" name="searchTerm" value="@ViewData["CurrentSearch"]" class="form-control" placeholder="@(isBg ? "Име на треньор..." : "Coach name...")" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label text-muted small fw-medium">@(isBg ? "От дата" : "From Date")</label>
+                    <input type="date" name="fromDate" value="@ViewData["FromDate"]" class="form-control" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label text-muted small fw-medium">@(isBg ? "До дата" : "To Date")</label>
+                    <input type="date" name="toDate" value="@ViewData["ToDate"]" class="form-control" />
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">@(isBg ? "Филтрирай" : "Filter")</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info text-center border-0 rounded-3 p-4">
+        <i class="bi bi-calendar-x fs-3 d-block mb-2"></i>
+        @(isBg ? "Все още нямате направени резервации за този период." : "You have no reservations yet for this period.")
+    </div>
+}
+else
+{
+    <div class="row g-3">
+        @foreach (var r in Model)
+        {
+            <div class="col-12">
+                <div class="card bg-card border-0 shadow-sm rounded-4 p-3 toggle-card">
+                    <div class="row align-items-center g-3">
+
+                        <div class="col-md-3 border-end border-secondary border-opacity-10">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="bg-primary bg-opacity-10 p-2.5 rounded-3 text-primary">
+                                    <i class="bi bi-clock-fill fs-5"></i>
+                                </div>
+                                <div>
+                                    <span class="text-muted d-block small">@(isBg ? "Дата и час" : "Date & Time")</span>
+                                    <span class="fw-semibold">@r.Date</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 border-end border-secondary border-opacity-10">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="bg-success bg-opacity-10 p-2.5 rounded-3 text-success">
+                                    <i class="bi bi-person-badge-fill fs-5"></i>
+                                </div>
+                                <div>
+                                    <span class="text-muted d-block small">@(isBg ? "Треньор" : "Coach")</span>
+                                    <span class="fw-semibold">@(isBg ? (r.CoachNameBg ?? r.CoachName) : r.CoachName)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="bg-warning bg-opacity-10 p-2.5 rounded-3 text-warning">
+                                    <i class="bi bi-activity fs-5"></i>
+                                </div>
+                                <div>
+                                    <span class="text-muted d-block small">@(isBg ? "Тип тренировка" : "Training Type")</span>
+                                    <span class="fw-medium text-light">@(isBg ? (r.TrainingTypeNameBg ?? r.TrainingTypeName) : r.TrainingTypeName)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 text-md-end">
+                            <a asp-action="Details" asp-route-id="@r.ReservationId" class="btn btn-outline-primary btn-sm px-4 py-2 w-100 rounded-3">
+                                <i class="bi bi-eye me-1"></i> @(isBg ? "Преглед" : "Details")
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

@@ -1,0 +1,75 @@
+﻿@using TennisAcademyApp.ViewModels.Coach;
+@model IEnumerable<FavouriteCoachViewModel>
+
+@{
+    var requestCulture = ViewContext.HttpContext.Features.Get<Microsoft.AspNetCore.Localization.IRequestCultureFeature>();
+    var currentCulture = requestCulture?.RequestCulture.UICulture.Name ?? "en";
+    var isBg = currentCulture == "bg";
+
+    ViewData["Title"] = isBg ? "Любими треньори" : "Favourites";
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show w-100 rounded-0 text-center mb-0" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show w-100 rounded-0 text-center mb-0" role="alert">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<h2 class="mb-4 text-center text-primary fw-bold">@(isBg ? "Моите Любими Треньори" : "My Favourite Coaches")</h2>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info text-center rounded-3 border-0">
+        <i class="bi bi-heartbreak-fill me-2"></i>@(isBg ? "Все още нямате добавени любими треньори." : "You don't have any favourite coaches yet.")
+    </div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        @foreach (var coach in Model)
+        {
+            <div class="col">
+                <div class="card h-100 shadow border-0 rounded-4">
+                    @if (!string.IsNullOrEmpty(coach.ImageUrl))
+                    {
+                        <img src="@coach.ImageUrl" class="card-img-top rounded-top-4" alt="@coach.CoachName" style="height: 300px; object-fit: cover;" />
+                    }
+                    else
+                    {
+                        <img src="https://via.placeholder.com/600x350?text=No+Image" class="card-img-top rounded-top-4" alt="No image" />
+                    }
+
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title text-primary fw-bold">@(isBg ? (coach.CoachNameBg ?? coach.CoachName) : coach.CoachName)</h5>
+                        <p class="card-text mb-3">
+                            <span class="text-muted"><i class="bi bi-person-fill me-1"></i>@(isBg ? "Възраст:" : "Age:")</span> @coach.CoachAge<br />
+                            <span class="text-muted"><i class="bi bi-info-circle-fill me-1"></i>@(isBg ? "Описание:" : "Description:")</span> @(isBg ? (coach.DescriptionBg ?? coach.Description) : coach.Description)
+                        </p>
+                    </div>
+
+                    <div class="card-footer bg-card border-0 d-flex justify-content-between px-3 pb-3 mt-auto">
+                        <a asp-controller="Coach" asp-action="Details" asp-route-id="@coach.CoachId" class="btn btn-outline-primary btn-sm px-3">
+                            <i class="bi bi-eye-fill me-1"></i>@(isBg ? "Детайли" : "Details")
+                        </a>
+
+                        <form asp-action="RemoveFromFavourites" asp-route-id="@coach.CoachId" method="post" class="m-0">
+                            <button type="submit" class="btn btn-outline-danger btn-sm px-3">
+                                <i class="bi bi-trash3-fill me-1"></i>@(isBg ? "Премахни" : "Remove")
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

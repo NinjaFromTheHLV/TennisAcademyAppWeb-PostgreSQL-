@@ -1,0 +1,62 @@
+﻿@using TennisAcademyApp.ViewModels.Reservation
+@model IEnumerable<ReservationHistoryViewModel>
+
+@{
+    var requestCulture = Context.Features.Get<Microsoft.AspNetCore.Localization.IRequestCultureFeature>();
+    var currentCulture = requestCulture?.RequestCulture.UICulture.Name ?? "en";
+    var isBg = currentCulture == "bg";
+
+    ViewData["Title"] = isBg ? "Минали резервации" : "Past Reservations";
+}
+
+<h2 class="mb-4 text-center text-light fw-bold">⏳ @(isBg ? "Минали резервации" : "Past Reservations")</h2>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info text-center bg-opacity-10 text-info border-info border-opacity-25 rounded-3">
+        @(isBg ? "Нямате минали резервации." : "You have no past reservations.")
+    </div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        @foreach (var r in Model)
+        {
+            <div class="col">
+                <div class="card bg-card border-0 shadow-sm h-100 rounded-4 overflow-hidden text-light">
+
+                    <img src="@r.SurfaceImageUrl"
+                         class="card-img-top object-fit-cover"
+                         alt="Surface Image"
+                         style="height: 200px; object-fit: cover;" />
+
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold text-accent mb-3">@r.CoachName</h5>
+
+                        <p class="card-text mb-2 small text-white-50">
+                            <strong class="text-light">@(isBg ? "Тренировка:" : "Training:")</strong> @r.TrainingTypeName
+                        </p>
+                        <p class="card-text mb-2 small text-white-50">
+                            <strong class="text-light">@(isBg ? "Настилка:" : "Surface:")</strong> @r.SurfaceName
+                        </p>
+                    </div>
+
+                    <div class="card-footer bg-black bg-opacity-20 border-0 py-3 small text-end fw-bold">
+                        @if (r.IsCanceled)
+                        {
+                            <span class="text-danger">
+                                <i class="bi bi-x-circle-fill me-1"></i> @(isBg ? "Отказана" : "Canceled")
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="text-success">
+                                <i class="bi bi-check-circle-fill me-1"></i> @(isBg ? "Приключена" : "Completed")
+                            </span>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

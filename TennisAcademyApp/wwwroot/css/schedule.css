@@ -1,0 +1,117 @@
+﻿
+.custom-schedule-table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+    .custom-schedule-table tbody tr {
+        transition: all 0.2s ease-in-out;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+        .custom-schedule-table tbody tr:hover {
+            background-color: rgba(255, 255, 255, 0.02) !important;
+            transform: scale(1.002);
+        }
+
+    .custom-schedule-table td {
+        border: none;
+    }
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+}
+
+.calendar-day {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    min-height: 110px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    transition: all 0.2s ease-in-out;
+}
+
+    .calendar-day:hover {
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .calendar-day.is-today {
+        border: 2px solid var(--bs-primary) !important;
+        background: rgba(13, 110, 253, 0.05);
+    }
+
+.day-number {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 5px;
+}
+
+.calendar-day.is-today .day-number {
+    color: var(--bs-primary);
+}
+
+.calendar-day.has-events {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.events-container {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    overflow-y: auto;
+    max-height: 75px;
+}
+
+.calendar-event-badge {
+    background: rgba(13, 110, 253, 0.15);
+    border-left: 3px solid var(--bs-primary);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+    transition: background 0.2s;
+}
+
+    .calendar-event-badge:hover {
+        background: rgba(13, 110, 253, 0.3);
+    }
+
+.event-time {
+    font-size: 0.7rem;
+}
+
+.event-title {
+    font-weight: 500;
+}
+
+.calendar-day.empty {
+    background: transparent;
+    border: none;
+    pointer-events: none;
+}
+
+.calendar-day-header {
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+}
+
+@media (max-width: 768px) {
+    .calendar-day {
+        min-height: 80px;
+        padding: 4px;
+    }
+
+    .event-title {
+        display: none; 
+    }
+}

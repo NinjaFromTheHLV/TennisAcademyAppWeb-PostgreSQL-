@@ -1,0 +1,148 @@
+﻿@using TennisAcademyApp.ViewModels.Cart;
+@model IEnumerable<RacketCartIndexViewModel>
+
+@{
+    var requestCulture = Context.Features.Get<Microsoft.AspNetCore.Localization.IRequestCultureFeature>();
+    var currentCulture = requestCulture?.RequestCulture.UICulture.Name ?? "en";
+    var isBg = currentCulture == "bg";
+
+    ViewData["Title"] = isBg ? "Количка" : "Shopping Cart";
+}
+
+<link rel="stylesheet" href="~/css/shop.css" asp-append-version="true" />
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show w-100 rounded-0 text-center mb-0" role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i> @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show w-100 rounded-0 text-center mb-0" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i> @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-alert="dismiss" aria-label="Close"></button>
+    </div>
+}
+
+<div class="container py-4">
+    <h2 class="fw-bold mb-4 text-light">
+        <i class="bi bi-cart3 text-primary me-2"></i>@(isBg ? "Твоята количка с ракети" : "Your Racket Cart")
+    </h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info text-center border-0 rounded-3 p-4">
+            <i class="bi bi-cart-x fs-3 d-block mb-2"></i>
+            @(isBg ? "Количката ти няма ракети." : "Your cart has no rackets.")
+        </div>
+    }
+    else
+    {
+        <div class="row g-3">
+            @foreach (var item in Model)
+            {
+                <div class="col-12">
+                    <div class="card bg-card border-0 shadow-sm rounded-4 p-3 toggle-card">
+                        <div class="row align-items-center g-3">
+                            
+                            <div class="col-md-5 border-end border-secondary border-opacity-10">
+                                <div class="d-flex align-items-center gap-3">
+                                    <img src="@item.ImageUrl" alt="Racket Image" class="rounded-3 object-fit-cover" style="width: 55px; height: 55px;" />
+                                    <div>
+                                        <h5 class="fw-semibold text-light m-0">@item.Brand @item.Model</h5>
+                                        
+                                        @if (item.IsGift)
+                                        {
+                                            <span class="badge bg-success text-uppercase py-1 px-2 mt-1">
+                                                <i class="bi bi-gift-fill me-1"></i>@(isBg ? "Подарък" : "Gift")
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <small class="text-white-50">
+                                                @(isBg ? "Цена за брой:" : "Price per racket:") 
+                                                @item.Price.ToString("C", new System.Globalization.CultureInfo("de-DE"))
+                                            </small>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2 border-end border-secondary border-opacity-10 text-center text-md-start px-md-4">
+                                <span class="text-muted d-block small">@(isBg ? "Количество" : "Quantity")</span>
+                                <span class="fw-bold text-white fs-5">@item.Quantity <small class="fs-6 text-white-50">@(isBg ? "бр." : "pcs")</small></span>
+                            </div>
+
+                            <div class="col-md-3 border-end border-secondary border-opacity-10 text-center text-md-start px-md-4">
+                                <span class="text-muted d-block small">@(isBg ? "Общо" : "Total")</span>
+                                <span class="fw-bold text-accent fs-5">@item.TotalPrice.ToString("C", new System.Globalization.CultureInfo("de-DE"))</span>
+                            </div>
+
+                            <div class="col-md-2 text-md-end text-center">
+                                <form asp-action="RemoveRacketFromCart" asp-route-id="@item.Id" method="post">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm px-3 py-2 rounded-3">
+                                        <i class="bi bi-trash3-fill me-1"></i>@(isBg ? "Премахни" : "Remove")
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="d-flex flex-column align-items-end mt-4 pt-3 border-top border-secondary border-opacity-10">
+            <div class="mb-3 text-end">
+                <span class="text-muted d-block small">@(isBg ? "Обща сума за плащане:" : "Grand Total:")</span>
+                <h2 class="text-accent fw-bold m-0">@Model.Sum(x => x.TotalPrice).ToString("C", new System.Globalization.CultureInfo("de-DE"))</h2>
+            </div>
+            
+            <button id="checkoutBtn" data-url="@Url.Action("RacketCheckout")" class="btn btn-buy px-5 py-2.5 rounded-3 fs-5">
+                <i class="bi bi-credit-card-2-back-fill me-2"></i>@(isBg ? "Завърши поръчката" : "Checkout")
+            </button>
+        </div>
+    }
+</div>
+
+<div id="successModal" class="checkout-success-overlay d-none">
+    <div class="checkout-success-card text-center">
+        <div class="success-checkmark-wrapper">
+            <div class="success-checkmark">
+                <div class="check-icon">
+                    <span class="icon-line line-tip"></span>
+                    <span class="icon-line line-long"></span>
+                    <div class="icon-circle"></div>
+                    <div class="icon-fix"></div>
+                </div>
+            </div>
+        </div>
+        <h3 class="fw-bold text-light mt-4 mb-2">@(isBg ? "Поръчката е приета!" : "Order Placed Successfully!")</h3>
+        <p class="text-white-50 small m-0">@(isBg ? "Благодарим ви, че избрахте нашата академия." : "Thank you for choosing our academy.")</p>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const checkoutBtn = document.getElementById("checkoutBtn");
+            const successModal = document.getElementById("successModal");
+
+            if (checkoutBtn) {
+                checkoutBtn.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    const targetUrl = this.getAttribute("data-url");
+
+                    successModal.classList.remove("d-none");
+                    successModal.classList.add("d-flex");
+
+                    setTimeout(function () {
+                        window.location.href = targetUrl;
+                    }, 2500);
+                });
+            }
+        });
+    </script>
+}

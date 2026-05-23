@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.msbuild" Version="6.0.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.16" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.16" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.16" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="MockQueryable.Moq" Version="7.0.1" />
+    <PackageReference Include="Moq" Version="4.20.72" />
+    <PackageReference Include="NUnit" Version="4.4.0" />
+    <PackageReference Include="NUnit.Analyzers" Version="4.10.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="NUnit3TestAdapter" Version="5.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TennisAcademy.Data.Models\TennisAcademyApp.Data.Models.csproj" />
+    <ProjectReference Include="..\TennisAcademy.Data\TennisAcademyApp.Data.csproj" />
+    <ProjectReference Include="..\TennisAcademyApp.GCommon\TennisAcademyApp.GCommon.csproj" />
+    <ProjectReference Include="..\TennisAcademyApp.Services.Core\TennisAcademyApp.Services.Core.csproj" />
+  </ItemGroup>
+
+
+</Project>

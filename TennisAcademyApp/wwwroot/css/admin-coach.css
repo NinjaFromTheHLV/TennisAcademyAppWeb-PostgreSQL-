@@ -1,0 +1,392 @@
+﻿:root {
+    --accent: #ccff00;
+    --danger: #ff3333;
+    --dark-bg: #151719;
+}
+
+.tracking-wider {
+    letter-spacing: 0.08em;
+}
+
+
+button.btn-add-coach-neon,
+a.btn-add-coach-neon,
+.btn.btn-add-coach-neon {
+    background: var(--accent) !important;
+    background-color: var(--accent) !important;
+    color: #000000 !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    border: none !important;
+    border-radius: 12px !important;
+    opacity: 1 !important;
+    transition: all 0.2s ease-in-out !important;
+    box-shadow: 0 4px 15px rgba(204, 255, 0, 0.4) !important;
+}
+
+    button.btn-add-coach-neon:hover,
+    a.btn-add-coach-neon:hover,
+    .btn.btn-add-coach-neon:hover {
+        background: #ffffff !important;
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4) !important;
+    }
+
+.admin-search-group {
+    background: rgba(0, 0, 0, 0.4) !important;
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 12px;
+    padding: 4px;
+    transition: all 0.2s ease-in-out;
+}
+
+    .admin-search-group:focus-within {
+        border-color: var(--accent) !important;
+        box-shadow: 0 0 15px rgba(204, 255, 0, 0.15) !important;
+    }
+
+.search-icon-box {
+    background: transparent !important;
+    border: none !important;
+    color: rgba(255, 255, 255, 0.5);
+    padding-left: 15px;
+}
+
+.coach-search-input {
+    background: transparent !important;
+    border: none !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+    padding: 12px 16px;
+}
+
+    .coach-search-input::placeholder {
+        color: rgba(255, 255, 255, 0.3);
+    }
+
+.btn-search-submit {
+    background: var(--accent) !important;
+    color: #000000 !important;
+    border-radius: 8px !important;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-right: 5px;
+    border: none !important;
+    transition: all 0.2s ease-in-out;
+}
+
+    .btn-search-submit:hover {
+        background: #ffffff !important;
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+    }
+
+.btn-search-clear {
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 8px !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: all 0.2s ease-in-out;
+}
+
+    .btn-search-clear:hover {
+        background: rgba(255, 255, 255, 0.15) !important;
+        color: var(--danger) !important;
+        border-color: var(--danger) !important;
+    }
+
+
+.coach-premium-card {
+    background: rgba(255, 255, 255, 0.02) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    border-radius: 24px !important;
+    backdrop-filter: blur(15px);
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5) !important;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .coach-premium-card:hover {
+        transform: translateY(-8px);
+        border-color: var(--accent) !important;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(204, 255, 0, 0.15) !important;
+    }
+
+.image-container {
+    position: relative;
+}
+
+.coach-card-img {
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.coach-premium-card:hover .coach-card-img {
+    transform: scale(1.05);
+}
+
+.age-badge {
+    background: rgba(0, 0, 0, 0.75) !important;
+    color: var(--accent) !important;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-weight: 800;
+}
+
+.coach-title-name {
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 1.3rem;
+}
+
+
+.coach-premium-card .btn-outline-warning {
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    border-radius: 10px !important;
+    transition: all 0.2s ease-in-out !important;
+}
+
+    .coach-premium-card .btn-outline-warning:hover {
+        background-color: var(--accent) !important;
+        color: #000000 !important;
+        border-color: var(--accent) !important;
+        box-shadow: 0 4px 12px rgba(204, 255, 0, 0.3);
+    }
+
+.coach-premium-card .btn-outline-danger {
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    border-radius: 10px !important;
+    transition: all 0.2s ease-in-out !important;
+}
+
+    .coach-premium-card .btn-outline-danger:hover {
+        background-color: var(--danger) !important;
+        color: #ffffff !important;
+        border-color: var(--danger) !important;
+        box-shadow: 0 4px 12px rgba(255, 51, 51, 0.3);
+    }
+
+
+.admin-form-card {
+    background: rgba(255, 255, 255, 0.02) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    border-radius: 24px !important;
+    backdrop-filter: blur(15px);
+    padding: 40px !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5) !important;
+}
+
+
+.form-control.admin-input,
+.form-control.admin-input:focus {
+    background-color: rgba(0, 0, 0, 0.4) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 10px !important;
+    padding: 12px 16px;
+    transition: all 0.2s ease-in-out;
+}
+
+    .form-control.admin-input:focus {
+        border-color: var(--accent) !important;
+        box-shadow: 0 0 15px rgba(204, 255, 0, 0.15) !important;
+    }
+
+
+button.btn-submit-neon,
+.btn.btn-submit-neon {
+    background: var(--accent) !important;
+    background-color: var(--accent) !important;
+    color: #000000 !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px;
+    border: none !important;
+    border-radius: 12px !important;
+    opacity: 1 !important;
+    transition: all 0.2s ease-in-out !important;
+    box-shadow: 0 4px 15px rgba(204, 255, 0, 0.3) !important;
+}
+
+    button.btn-submit-neon:hover,
+    .btn.btn-submit-neon:hover {
+        background: #ffffff !important;
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2) !important;
+    }
+
+
+.btn-cancel-outline {
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    text-transform: uppercase;
+    border-radius: 12px !important;
+    transition: all 0.2s ease-in-out !important;
+}
+
+    .btn-cancel-outline:hover {
+        background-color: rgba(255, 255, 255, 0.05) !important;
+        color: var(--danger) !important;
+        border-color: var(--danger) !important;
+    }
+
+
+button.btn-delete-danger-neon,
+.btn.btn-delete-danger-neon {
+    background: var(--danger) !important;
+    background-color: var(--danger) !important;
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    border: none !important;
+    border-radius: 12px !important;
+    opacity: 1 !important;
+    transition: all 0.2s ease-in-out !important;
+    box-shadow: 0 4px 15px rgba(255, 51, 51, 0.4) !important;
+}
+
+    button.btn-delete-danger-neon:hover,
+    .btn.btn-delete-danger-neon:hover {
+        background: #ffffff !important;
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4) !important;
+    }
+
+
+.coach-custom-pagination .page-link {
+    background-color: rgba(0, 0, 0, 0.4) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    padding: 0.6rem 1.1rem;
+    font-weight: 700;
+    transition: all 0.2s ease-in-out;
+}
+
+    .coach-custom-pagination .page-link:hover {
+        background-color: rgba(255, 255, 255, 0.05) !important;
+        color: var(--accent) !important;
+        border-color: var(--accent) !important;
+    }
+
+.coach-custom-pagination .page-item.active .page-link {
+    background: var(--accent) !important;
+    color: #000000 !important;
+    border-color: var(--accent) !important;
+    font-weight: 800;
+    box-shadow: 0 0 15px rgba(204, 255, 0, 0.3);
+}
+
+.coach-custom-pagination .page-item.disabled .page-link {
+    background-color: rgba(0, 0, 0, 0.2) !important;
+    color: rgba(255, 255, 255, 0.15) !important;
+    border-color: rgba(255, 255, 255, 0.03) !important;
+}
+
+.admin-form-card {
+    background: rgba(255, 255, 255, 0.02) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    border-radius: 24px !important;
+    backdrop-filter: blur(15px);
+    padding: 40px !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5) !important;
+}
+
+.form-control.admin-input,
+.form-control.admin-input:focus,
+textarea.admin-input,
+textarea.admin-input:focus {
+    background-color: rgba(0, 0, 0, 0.4) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 10px !important;
+    padding: 12px 16px;
+    transition: all 0.2s ease-in-out;
+}
+
+    .form-control.admin-input:focus,
+    textarea.admin-input:focus {
+        border-color: #ccff00 !important;
+        box-shadow: 0 0 15px rgba(204, 255, 0, 0.15) !important;
+    }
+
+button.btn-submit-neon,
+.btn.btn-submit-neon {
+    background: #ccff00 !important;
+    background-color: #ccff00 !important;
+    color: #000000 !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px;
+    border: none !important;
+    border-radius: 12px !important;
+    opacity: 1 !important;
+    transition: all 0.2s ease-in-out !important;
+    box-shadow: 0 4px 15px rgba(204, 255, 0, 0.4) !important;
+}
+
+    button.btn-submit-neon:hover,
+    .btn.btn-submit-neon:hover {
+        background: #ffffff !important;
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(255, 255, 255, 0.4) !important;
+    }
+
+.btn-cancel-outline {
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    text-transform: uppercase;
+    border-radius: 12px !important;
+    transition: all 0.2s ease-in-out !important;
+}
+
+    .btn-cancel-outline:hover {
+        background-color: rgba(255, 255, 255, 0.05) !important;
+        color: #ff3333 !important;
+        border-color: #ff3333 !important;
+    }
+
+button.btn-delete-danger-neon,
+.btn.btn-delete-danger-neon {
+    background: #ff3333 !important;
+    background-color: #ff3333 !important;
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    border: none !important;
+    border-radius: 12px !important;
+    opacity: 1 !important;
+    transition: all 0.2s ease-in-out !important;
+    box-shadow: 0 4px 15px rgba(255, 51, 51, 0.4) !important;
+}
+
+    button.btn-delete-danger-neon:hover,
+    .btn.btn-delete-danger-neon:hover {
+        background: #ffffff !important;
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4) !important;
+    }
+
+.text-danger.small {
+    color: #ff3333 !important;
+    font-weight: 600;
+    margin-top: 5px;
+    display: block;
+}

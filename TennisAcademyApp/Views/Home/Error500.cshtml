@@ -1,0 +1,20 @@
+﻿@{
+    var requestCulture = Context.Features.Get<Microsoft.AspNetCore.Localization.IRequestCultureFeature>();
+    var currentCulture = requestCulture?.RequestCulture.UICulture.Name ?? "en";
+    var isBg = currentCulture == "bg";
+
+    ViewData["Title"] = isBg ? "Вътрешна грешка на сървъра" : "Internal Server Error";
+}
+
+<div style="display: flex; align-items: center; justify-content: center; min-height: 80vh; flex-direction: column; text-align: center;">
+    <h1 style="font-size: 6rem; margin-bottom: 0.5rem; color: #dc3545;">500</h1>
+    <h2 style="font-size: 2rem; margin-bottom: 1rem;">@(isBg ? "Нещо се обърка" : "Something went wrong")</h2>
+    <p style="font-size: 1.2rem; color: #666; max-width: 600px;">
+        @(isBg
+                ? "Възникна неочаквана грешка на сървъра. Работим по отстраняването на проблема. Моля, опитайте отново по-късно."
+                : "An unexpected error occurred on the server. We are working to fix the issue. Please try again later.")
+    </p>
+    <a href="@Url.Action("Index", "Home")" class="btn btn-danger mt-4" style="margin-top: 2rem; padding: 10px 20px; font-size: 1.1rem;">
+        @(isBg ? "Назад към Начало" : "Back to Home")
+    </a>
+</div>

@@ -1,0 +1,53 @@
+﻿@page
+@model LoginModel
+
+@{
+    var requestCulture = ViewContext.HttpContext.Features.Get<Microsoft.AspNetCore.Localization.IRequestCultureFeature>();
+    var currentCulture = requestCulture?.RequestCulture.UICulture.Name ?? "en";
+    var isBg = currentCulture == "bg";
+}
+
+<div class="row justify-content-center align-items-center mt-5">
+    <div class="col-md-5">
+        <div class="card shadow-lg border-0 rounded-4 p-4">
+            <div class="card-body">
+                <div class="text-center mb-4">
+                    <i class="bi bi-trophy text-primary fs-1"></i>
+                    <h2 class="fw-semibold mt-2">@(isBg ? "Добре дошли отново" : "Welcome Back")</h2>
+                    <p class="text-muted small">@(isBg ? "Влезте в профила си, за да продължите" : "Log in to your account to continue")</p>
+                </div>
+
+                <form id="account" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.Email" class="form-control rounded-3" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                        <label asp-for="Input.Email">Email</label>
+                        <span asp-validation-for="Input.Email" class="text-danger small"></span>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.Password" class="form-control rounded-3" autocomplete="current-password" aria-required="true" placeholder="password" />
+                        <label asp-for="Input.Password">@(isBg ? "Парола" : "Password")</label>
+                        <span asp-validation-for="Input.Password" class="text-danger small"></span>
+                    </div>
+
+                    <div class="form-check mb-4 text-start">
+                        <input class="form-check-input" asp-for="Input.RememberMe" />
+                        <label asp-for="Input.RememberMe" class="form-check-label small text-muted">
+                            @(isBg ? "Запомни ме" : "Remember me")
+                        </label>
+                    </div>
+
+                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-success py-2.5 rounded-3 fw-bold">
+                        @(isBg ? "Вход" : "Log in")
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

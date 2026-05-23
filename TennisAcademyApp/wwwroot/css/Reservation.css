@@ -1,0 +1,38 @@
+﻿#surface-preview-holder,
+#coach-preview-holder {
+    position: absolute;
+    bottom: 110%;
+    left: 0;
+    transform: translateY(10px) scale(0.95);
+    width: 280px;
+    height: 175px;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 3px solid var(--accent);
+    background-color: var(--bg-card);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1060;
+}
+
+    #surface-preview-holder.visible,
+    #coach-preview-holder.visible {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0) scale(1);
+    }
+
+#popup-img,
+#coach-popup-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.custom-surface-dropdown .dropdown-item:hover,
+.custom-coach-dropdown .dropdown-item:hover {
+    background-color: var(--accent) !important;
+    color: #000 !important;
+}

@@ -1,0 +1,80 @@
+﻿@using TennisAcademyApp.ViewModels.Racket
+@model IEnumerable<RacketIndexViewModel>
+
+@{
+    var requestCulture = Context.Features.Get<Microsoft.AspNetCore.Localization.IRequestCultureFeature>();
+    var currentCulture = requestCulture?.RequestCulture.UICulture.Name ?? "en";
+    var isBg = currentCulture == "bg";
+
+    ViewData["Title"] = isBg ? "Управление на ракети" : "Racket Management";
+}
+
+<link rel="stylesheet" href="~/css/shop-admin.css" asp-append-version="true" />
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show w-100 rounded-0 text-center mb-0" role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i> @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show w-100 rounded-0 text-center mb-0" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i> @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="container py-4">
+
+    <div class="text-center mb-5">
+        <span class="badge bg-dark border border-secondary border-opacity-25 text-white-50 px-3 py-2 rounded-pill mb-2 tracking-wider small">
+            <i class="bi bi-shield-fill text-warning me-1"></i> INVENTORY CONTROL
+        </span>
+        <h2 class="fw-bold text-light m-0">@(isBg ? "Управление на тенис ракети" : "Tennis Rackets Management")</h2>
+    </div>
+
+    <div class="d-flex justify-content-end mb-4">
+        <a asp-action="Create" class="btn btn-add-shop-neon py-2.5 px-4 text-nowrap">
+            <i class="bi bi-plus-circle-fill me-2"></i>@(isBg ? "Добави Ракета" : "Add a Racket")
+        </a>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var racket in Model)
+        {
+            <div class="col">
+                <div class="card coach-premium-card h-100">
+
+                    <div class="ratio ratio-4x3 overflow-hidden image-container" style="height: 300px;">
+                        <img src="@racket.ImageUrl" class="card-img-top coach-card-img" alt="Racket Image" style="object-fit: cover;" />
+                        <div class="card-img-overlay d-flex align-items-start justify-content-end p-3">
+                            <span class="badge qty-badge px-2.5 py-1.5 rounded-2 fw-bold">
+                                @(isBg ? "Наличност:" : "Stock:") @racket.Quantity
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="card-body d-flex flex-column justify-content-between p-4">
+                        <div class="mb-3">
+                            <h5 class="coach-title-name m-0 text-truncate">@racket.Brand - @racket.Model</h5>
+                            <span class="text-accent d-block fw-bold fs-4 mt-2">&euro; @racket.Price.ToString("F2")</span>
+                        </div>
+
+                        <div class="d-flex gap-2 w-100 mt-2">
+                            <a asp-action="Edit" asp-route-id="@racket.Id" class="btn btn-outline-warning btn-sm w-50 py-2 fw-bold text-uppercase text-nowrap">
+                                <i class="bi bi-pencil-square me-1"></i>@(isBg ? "Редактирай" : "Edit")
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@racket.Id" class="btn btn-outline-danger btn-sm w-50 py-2 fw-bold text-uppercase text-nowrap">
+                                <i class="bi bi-trash3-fill me-1"></i>@(isBg ? "Изтрий" : "Delete")
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+</div>

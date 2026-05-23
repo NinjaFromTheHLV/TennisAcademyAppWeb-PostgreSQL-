@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.TagHelpers" Version="2.3.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TennisAcademy.Data.Models\TennisAcademyApp.Data.Models.csproj" />
+    <ProjectReference Include="..\TennisAcademy.Data\TennisAcademyApp.Data.csproj" />
+    <ProjectReference Include="..\TennisAcademyApp.GCommon\TennisAcademyApp.GCommon.csproj" />
+  </ItemGroup>
+
+</Project>

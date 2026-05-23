@@ -1,0 +1,87 @@
+﻿@using TennisAcademyApp.ViewModels.Coach;
+@model TennisAcademyApp.ViewModels.Coach.CoachEditInputModel
+
+@{
+    var requestCulture = Context.Features.Get<Microsoft.AspNetCore.Localization.IRequestCultureFeature>();
+    var currentCulture = requestCulture?.RequestCulture.UICulture.Name ?? "en";
+    var isBg = currentCulture == "bg";
+
+    ViewData["Title"] = isBg ? "Редактирай треньор" : "Edit Coach";
+}
+
+<link rel="stylesheet" href="~/css/admin-coach.css" asp-append-version="true" />
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+            <div class="card admin-form-card">
+                <div class="text-center mb-4">
+                    <span class="badge bg-dark border border-secondary border-opacity-25 text-white-50 px-3 py-2 rounded-pill mb-2 tracking-wider small">
+                        <i class="bi bi-pencil-square text-warning me-1"></i> ROSTER MANAGEMENT
+                    </span>
+                    <h2 class="fw-bold text-light m-0">@(isBg ? "Редактирай профил" : "Edit Coach Profile")</h2>
+                </div>
+
+                <form asp-action="Edit" method="post">
+                    <input type="hidden" asp-for="CoachId" />
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-8">
+                            <label asp-for="Name" class="form-label text-white-50 small fw-bold text-uppercase">@(isBg ? "Име" : "Name")</label>
+                            <input asp-for="Name" class="form-control admin-input" />
+                            <span asp-validation-for="Name" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label asp-for="Age" class="form-label text-white-50 small fw-bold text-uppercase">@(isBg ? "Възраст" : "Age")</label>
+                            <input asp-for="Age" class="form-control admin-input" type="number" min="18" />
+                            <span asp-validation-for="Age" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Nationality" class="form-label text-white-50 small fw-bold text-uppercase">@(isBg ? "Националност" : "Nationality")</label>
+                        <input asp-for="Nationality" class="form-control admin-input" />
+                        <span asp-validation-for="Nationality" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="ImageUrl" class="form-label text-white-50 small fw-bold text-uppercase">@(isBg ? "Линк към снимка" : "Image URL")</label>
+                        <input asp-for="ImageUrl" class="form-control admin-input" />
+                        <span asp-validation-for="ImageUrl" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Description" class="form-label text-white-50 small fw-bold text-uppercase">@(isBg ? "Описание" : "Description")</label>
+                        <textarea asp-for="Description" class="form-control admin-input" rows="4" style="resize: none;"></textarea>
+                        <span asp-validation-for="Description" class="text-danger small"></span>
+                    </div>
+
+                    <div class="row g-2">
+                        <div class="col-md-8">
+                            <button type="submit" class="btn btn-submit-neon w-100 py-3 d-flex align-items-center justify-content-center gap-2">
+                                <i class="bi bi-check-lg fs-5"></i>
+                                @(isBg ? "Запази промените" : "Save Changes")
+                            </button>
+                        </div>
+                        <div class="col-md-4">
+                            <a asp-action="Index" class="btn btn-cancel-outline w-100 py-3 d-flex align-items-center justify-content-center">
+                                @(isBg ? "Отказ" : "Cancel")
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

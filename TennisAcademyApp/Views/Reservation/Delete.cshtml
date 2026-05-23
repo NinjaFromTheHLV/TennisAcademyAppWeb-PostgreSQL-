@@ -1,0 +1,40 @@
+﻿@using TennisAcademyApp.ViewModels.Reservation
+@using static TennisAcademyApp.GCommon.Validations.ValidationConstants.Reservation;
+@model TennisAcademyApp.ViewModels.Reservation.ReservationDeleteViewModel
+
+@{
+    var requestCulture = Context.Features.Get<Microsoft.AspNetCore.Localization.IRequestCultureFeature>();
+    var currentCulture = requestCulture?.RequestCulture.UICulture.Name ?? "en";
+    var isBg = currentCulture == "bg";
+
+    ViewData["Title"] = isBg ? "Изтрий резервация" : "Delete Reservation";
+}
+
+<h2 class="text-danger mb-4 text-center">
+    @(isBg ? "Сигурни ли сте, че искате да изтриете тази резервация?" : "Are you sure you want to delete this reservation?")
+</h2>
+
+<div class="d-flex justify-content-center">
+    <div class="card shadow" style="max-width: 400px; width: 100%;">
+        <img src="@Url.Content(Model.ImageUrl)"
+             class="card-img-top object-fit-cover"
+             style="max-height: 250px; object-fit: cover;"
+             alt="Surface Image" />
+
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-4">@(isBg ? "Дата и час:" : "Date & Time:")</dt>
+                <dd class="col-sm-8">@Model.Date.ToString(DateFormat)</dd>
+
+                <dt class="col-sm-4">@(isBg ? "Настилка:" : "Surface:")</dt>
+                <dd class="col-sm-8">@Model.SurfaceName</dd>
+            </dl>
+
+            <form asp-action="Delete" method="post" class="mt-4 d-flex gap-3">
+                <input type="hidden" asp-for="Id" />
+                <button type="submit" class="btn btn-danger px-4 py-2">@(isBg ? "Изтрий" : "Delete")</button>
+                <a asp-action="Index" class="btn btn-outline-secondary px-4 py-2">@(isBg ? "Отказ" : "Cancel")</a>
+            </form>
+        </div>
+    </div>
+</div>

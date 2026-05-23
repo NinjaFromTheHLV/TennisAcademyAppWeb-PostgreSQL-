@@ -1,0 +1,275 @@
+﻿@using static TennisAcademyApp.GCommon.Validations.ValidationConstants;
+@using Microsoft.AspNetCore.Builder
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.Extensions.Options
+
+@inject IOptions<RequestLocalizationOptions> LocOptions
+
+@{
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+    var currentCulture = requestCulture?.RequestCulture.UICulture.Name ?? "en";
+    var isBg = currentCulture == "bg";
+}
+
+<!DOCTYPE html>
+<html lang="@currentCulture">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - TennisAcademy</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/TennisAcademyApp.styles.css" asp-append-version="true" />
+</head>
+<body>
+
+    <nav id="sidebar" class="navbar-dark bg-card border-end d-flex flex-column p-3">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            @if (User.IsInRole(Admin))
+            {
+                <a class="navbar-brand fw-bold" asp-area="Admin" asp-controller="Home" asp-action="Index">
+                    <i class="bi bi-shield-lock-fill text-warning"></i> @(isBg ? "Админ Панел" : "Admin Dashboard")
+                </a>
+            }
+            else
+            {
+                <a class="navbar-brand fw-bold" asp-area="" asp-controller="Home" asp-action="Index">
+                    <i class="bi bi-trophy-fill text-primary"></i> TennisAcademy
+                </a>
+            }
+        </div>
+
+        <ul class="nav flex-column flex-grow-1 gap-2">
+            <li class="nav-item">
+                <a class="nav-link dropdown-toggle d-flex align-items-center justify-content-between"
+                   data-bs-toggle="collapse"
+                   data-bs-target="#coachSubmenu"
+                   role="button"
+                   aria-expanded="false">
+                    <span><i class="bi bi-people-fill me-2"></i> @(isBg ? "Треньорски състав" : "Coaches")</span>
+                </a>
+                <ul class="collapse list-unstyled ps-3 mt-1 gap-1" id="coachSubmenu">
+                    <li><a class="nav-link small" asp-area="" asp-controller="Coach" asp-action="Index">@(isBg ? "Нашите Треньори" : "Our Coaches")</a></li>
+                    <li><a class="nav-link small" asp-area="" asp-controller="FavouriteCoach" asp-action="Favourite">@(isBg ? "Любими Треньори" : "My Favourite Coaches")</a></li>
+                </ul>
+            </li>
+
+            @if (!User.IsInRole(Admin))
+            {
+                <li class="nav-item">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center justify-content-between"
+                       data-bs-toggle="collapse"
+                       data-bs-target="#reservationSubmenu"
+                       role="button"
+                       aria-expanded="false">
+                        <span><i class="bi bi-calendar3 me-2"></i> @(isBg ? "Резервации" : "Reservations")</span>
+                    </a>
+                    <ul class="collapse list-unstyled ps-3 mt-1 gap-1" id="reservationSubmenu">
+                        <li><a class="nav-link small" asp-area="" asp-controller="Reservation" asp-action="Index">@(isBg ? "Моите Резервации" : "My Reservations")</a></li>
+                        <li><a class="nav-link small" asp-area="" asp-controller="Reservation" asp-action="Create">@(isBg ? "Резервирай корт" : "Reserve")</a></li>
+                        <li><a class="nav-link small" asp-area="" asp-controller="Reservation" asp-action="ReservationHistory">@(isBg ? "История" : "History")</a></li>
+                    </ul>
+                </li>
+            }
+
+            <li class="nav-item">
+                <a class="nav-link" asp-area="" asp-controller="Racket" asp-action="Index">
+                    <i class="bi bi-shop me-2"></i> @(isBg ? "Магазин" : "Shop")
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-light d-flex align-items-center gap-2" asp-area="" asp-controller="Tournament" asp-action="All">
+                    <i class="bi bi-trophy text-warning fs-5"></i>
+                    <span>@(isBg ? "Турнири" : "Tournaments")</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Ranking" asp-action="Index">
+                    <i class="bi bi-trophy-fill text-warning me-1"></i>
+                    @(isBg ? "Ранглиста" : "Leaderboard")
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark fw-bold" asp-area="" asp-controller="Wheel" asp-action="Index">
+                    <i class="bi bi-gift-fill text-danger me-1"></i>
+                    @(isBg ? "Колело на късмета" : "Wheel of Fortune")
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link dropdown-toggle d-flex align-items-center justify-content-between"
+                   data-bs-toggle="collapse"
+                   data-bs-target="#cartSubmenu"
+                   role="button"
+                   aria-expanded="false">
+                    <span><i class="bi bi-cart-fill me-2"></i> @(isBg ? "Количка" : "Cart")</span>
+                </a>
+                <ul class="collapse list-unstyled ps-3 mt-1 gap-1" id="cartSubmenu">
+                    <li><a class="nav-link small" asp-controller="RacketCart" asp-action="Index">@(isBg ? "Ракети" : "Rackets")</a></li>
+                    <li><a class="nav-link small" asp-controller="BallCart" asp-action="Index">@(isBg ? "Топки" : "Balls")</a></li>
+                    <li><a class="nav-link small" asp-controller="BagCart" asp-action="Index">@(isBg ? "Сакове" : "Bags")</a></li>
+                </ul>
+            </li>
+            @if (User.Identity.IsAuthenticated && User.IsInRole("Coach"))
+            {
+                <li class="nav-item">
+                    <a class="nav-link text-white fw-bold" asp-controller="Schedule" asp-action="MySchedule">
+                        <i class="bi bi-calendar-check me-1 text-accent"></i> @(isBg ? "Моят График" : "My Schedule")
+                    </a>
+                </li>
+            }
+            @if (User.IsInRole(Admin))
+            {
+                <li class="nav-item">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center justify-content-between"
+                       data-bs-toggle="collapse"
+                       data-bs-target="#adminSubmenu"
+                       role="button"
+                       aria-expanded="false">
+                        <span><i class="bi bi-gear-fill me-2"></i> @(isBg ? "Управление" : "Manage")</span>
+                    </a>
+                    <ul class="collapse list-unstyled ps-3 mt-1 gap-1" id="adminSubmenu">
+                        <li><a class="nav-link small" asp-area="Admin" asp-controller="UserManagement" asp-action="Index">@(isBg ? "Потребители" : "Users")</a></li>
+                        <li><a class="nav-link small" asp-area="Admin" asp-controller="CoachManagement" asp-action="Index">@(isBg ? "Трен. профили" : "Coaches")</a></li>
+                        <li><a class="nav-link small" asp-area="Admin" asp-controller="RacketManagement" asp-action="Index">@(isBg ? "Ракети каталог" : "Rackets")</a></li>
+                        <li><a class="nav-link small" asp-area="Admin" asp-controller="BallManagement" asp-action="Index">@(isBg ? "Топки каталог" : "Balls")</a></li>
+                        <li><a class="nav-link small" asp-area="Admin" asp-controller="BagManagement" asp-action="Index">@(isBg ? "Сакове каталог" : "Bags")</a></li>
+                        <li><a class="nav-link small" asp-area="Admin" asp-controller="Reports" asp-action="Index">📊 @(isBg ? "Бизнес Справки" : "Reports")</a></li>
+                    </ul>
+                </li>
+            }
+        </ul>
+    </nav>
+
+    <div id="content-wrapper">
+        <header class="navbar navbar-expand navbar-light bg-card border-bottom p-3">
+            <div class="container-fluid p-0">
+                <button type="button" id="sidebarToggle" class="btn btn-outline-primary border-0 me-3">
+                    <i class="bi bi-list fs-4"></i>
+                </button>
+
+                <div class="ms-auto d-flex align-items-center gap-3">
+                    <div class="dropdown">
+                        <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" id="langDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            🌐 @(isBg ? "Български" : "English")
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="langDropdown">
+                            @{
+                                var returnUrl = string.IsNullOrEmpty(Context.Request.Path) ? "/" : $"{Context.Request.Path}{Context.Request.QueryString}";
+                            }
+                            <li>
+                                <form asp-area="" asp-controller="Language" asp-action="SetLanguage" asp-route-returnUrl="@returnUrl" asp-route-culture="bg" method="post">
+                                    <button type="submit" class="dropdown-item @(isBg ? "active" : "")">Български (BG)</button>
+                                </form>
+                            </li>
+                            <li>
+                                <form asp-area="" asp-controller="Language" asp-action="SetLanguage" asp-route-returnUrl="@returnUrl" asp-route-culture="en" method="post">
+                                    <button type="submit" class="dropdown-item @(!isBg ? "active" : "")">English (EN)</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </header>
+
+        <div class="container-fluid p-4 flex-grow-1">
+            <main role="main">
+                @RenderBody()
+            </main>
+        </div>
+
+        <footer class="mt-auto bg-dark border-top border-secondary position-relative overflow-hidden footer-master">
+            <div class="footer-ambient-glow"></div>
+            <div class="container py-5 position-relative z-1">
+                <div class="row g-4 align-items-center">
+                    <div class="col-lg-7 text-center text-lg-start">
+                        <h3 class="fw-bold text-white mb-3">
+                            <i class="bi bi-trophy-fill text-warning me-2 d-inline-block shadow-pulse"></i>TennisAcademy
+                        </h3>
+                        <p class="text-secondary mb-4 pe-lg-5">
+                            @(isBg ? "Преоткрий играта. Усъвършенствай удара си. Резервирай своя корт само с няколко клика." : "Rediscover the game. Perfect your swing. Reserve your court with just a few clicks.")
+                        </p>
+                        <div class="row g-4 mb-4 text-start justify-content-center justify-content-lg-start">
+                            <div class="col-sm-6 col-md-5">
+                                <h6 class="text-uppercase tracking-wide mb-3 neon-text-blue"><i class="bi bi-clock me-2"></i>@(isBg ? "Работно време" : "Working Hours")</h6>
+                                <ul class="list-unstyled text-secondary small">
+                                    <li class="d-flex justify-content-between border-bottom border-secondary pb-1 mb-2">
+                                        <span>@(isBg ? "Пон - Пет:" : "Mon - Fri:")</span> <span class="text-white">08:00 - 20:00</span>
+                                    </li>
+                                    <li class="d-flex justify-content-between">
+                                        <span>@(isBg ? "Съб - Нед:" : "Sat - Sun:")</span> <span class="text-danger fw-bold">@(isBg ? "Почивни дни" : "Closed")</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-6 col-md-5">
+                                <h6 class="text-uppercase tracking-wide mb-3 neon-text-blue"><i class="bi bi-geo-alt me-2"></i>@(isBg ? "Контакти" : "Contacts")</h6>
+                                <ul class="list-unstyled text-secondary small">
+                                    <li class="mb-2"><i class="bi bi-pin-map text-white me-2"></i>@(isBg ? "София, Студентски град" : "Sofia, Studentski grad")</li>
+                                    <li class="mb-3"><i class="bi bi-telephone text-white me-2"></i>+359 888 123 456</li>
+                                    <li>
+                                        <div class="live-status-badge">
+                                            <span class="pulsing-dot"></span> @(isBg ? "Кортовете са отворени" : "Courts are open")
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="social-links d-flex gap-3 justify-content-center justify-content-lg-start mt-2">
+                            <a href="javascript:void(0);" class="social-btn instagram"><i class="bi bi-instagram"></i></a>
+                            <a href="javascript:void(0);" class="social-btn facebook"><i class="bi bi-facebook"></i></a>
+                            <a href="javascript:void(0);" class="social-btn youtube"><i class="bi bi-youtube"></i></a>
+                            <a href="javascript:void(0);" class="social-btn tiktok"><i class="bi bi-tiktok"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 mt-5 mt-lg-0 border-start border-secondary d-flex justify-content-center align-items-center">
+                        <div class="iso-arena-wrapper bg-transparent border-0">
+                            <div class="iso-arena">
+                                <div class="iso-court">
+                                    <div class="court-lines"></div>
+                                    <div class="net-3d"></div>
+                                    <div class="ball-shadow"></div>
+                                    <div class="ball-3d"></div>
+                                    <div class="stickman opponent">
+                                        <div class="head"></div><div class="torso"></div>
+                                        <div class="arm arm-left"></div>
+                                        <div class="arm arm-right"><div class="racket"></div></div>
+                                        <div class="leg leg-left"></div><div class="leg leg-right"></div>
+                                    </div>
+                                    <div class="stickman player-main">
+                                        <div class="head text-primary-glow"></div><div class="torso"></div>
+                                        <div class="arm arm-left"></div>
+                                        <div class="arm arm-right"><div class="racket"></div></div>
+                                        <div class="leg leg-left"></div><div class="leg leg-right"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-5 pt-4 border-top border-secondary text-center">
+                    <div class="col-12 py-2">
+                        <small class="text-secondary tracking-wide d-block">
+                            &copy; @DateTime.Now.Year - TENNIS ACADEMY APP
+                            <span class="mx-2 opacity-50">|</span>
+                            ENDLESS RALLY EDITION
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        document.getElementById('sidebarToggle').addEventListener('click', function () {
+            document.getElementById('sidebar').classList.toggle('collapsed');
+        });
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,513 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+#sidebar {
+    min-width: 260px;
+    max-width: 260px;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+    #sidebar.collapsed {
+        margin-left: -260px;
+    }
+
+#content-wrapper {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    flex: 1 0 auto;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 500;
+}
+
+.dropdown-toggle::after {
+    display: inline-block;
+    margin-left: auto;
+    vertical-align: middle;
+    content: "";
+    border-top: 0.3em solid;
+    border-right: 0.3em solid transparent;
+    border-bottom: 0;
+    border-left: 0.3em solid transparent;
+    transition: transform 0.2s ease;
+}
+
+.dropdown-toggle[aria-expanded="true"]::after {
+    transform: rotate(180deg);
+}
+
+.nav-item .collapse .nav-link {
+    padding-left: 1rem;
+    opacity: 0.75;
+    transition: opacity 0.2s;
+}
+
+    .nav-item .collapse .nav-link:hover {
+        opacity: 1;
+    }
+
+
+.bg-dark {
+    background-color: #0f172a !important;
+}
+
+footer {
+    flex-shrink: 0;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.footer-master {
+    background-color: #0b1120 !important;
+    margin-bottom: 0 !important;
+}
+
+.footer-ambient-glow {
+    position: absolute;
+    top: -50%;
+    left: -10%;
+    width: 60%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(13, 110, 253, 0.05) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.tracking-wide {
+    letter-spacing: 1.5px;
+}
+
+.neon-text-blue {
+    color: #38bdf8;
+    text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+}
+
+.live-status-badge {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    color: #10b981;
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.pulsing-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #10b981;
+    border-radius: 50%;
+    margin-right: 8px;
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+    animation: pulse-green 1.5s infinite;
+}
+
+@keyframes pulse-green {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+    }
+
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+    }
+
+    100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+    }
+}
+
+/* ================= СОЦИАЛНИ МРЕЖИ ================= */
+.social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #94a3b8;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid transparent;
+}
+
+    .social-btn:hover {
+        transform: translateY(-5px);
+        color: #fff;
+    }
+
+    .social-btn.instagram:hover {
+        background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+        box-shadow: 0 5px 15px rgba(220, 39, 67, 0.4);
+        border-color: transparent;
+    }
+
+    .social-btn.facebook:hover {
+        background: #1877f2;
+        box-shadow: 0 5px 15px rgba(24, 119, 242, 0.4);
+        border-color: #1877f2;
+    }
+
+    .social-btn.youtube:hover {
+        background: #ff0000;
+        box-shadow: 0 5px 15px rgba(255, 0, 0, 0.4);
+        border-color: #ff0000;
+    }
+
+    .social-btn.tiktok:hover {
+        background: #000000;
+        box-shadow: -2px 2px 10px #00f2fe, 2px -2px 10px #fe0979;
+        border-color: #333;
+    }
+
+.iso-arena-wrapper {
+    width: 100%;
+    height: 220px;
+    max-width: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 1000px;
+    background: transparent !important;
+    border: none !important;
+}
+
+.iso-arena {
+    position: relative;
+    transform-style: preserve-3d;
+}
+
+.iso-court {
+    width: 200px;
+    height: 320px;
+    background: #0284c7;
+    transform: rotateX(60deg) rotateZ(-45deg);
+    transform-style: preserve-3d;
+    box-shadow: -15px 15px 30px rgba(0, 0, 0, 0.8), inset 0 0 0 4px #fff;
+    position: relative;
+}
+
+.court-lines {
+    position: absolute;
+    inset: 12px;
+    border: 2px solid #fff;
+    opacity: 0.8;
+}
+
+    .court-lines::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: #fff;
+        transform: translateY(-50%);
+    }
+
+    .court-lines::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        width: 2px;
+        background: #fff;
+        transform: translateX(-50%);
+    }
+
+.net-3d {
+    position: absolute;
+    top: 50%;
+    left: -5%;
+    width: 110%;
+    height: 25px;
+    background: rgba(255, 255, 255, 0.15);
+    border-top: 3px solid #fff;
+    transform: translateY(-50%) rotateX(-90deg);
+    transform-origin: bottom;
+    background-image: linear-gradient(to right, rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.6) 1px, transparent 1px);
+    background-size: 4px 4px;
+}
+
+.stickman {
+    position: absolute;
+    width: 24px;
+    height: 50px;
+    transform: translateZ(0) rotateZ(45deg) rotateX(-60deg);
+    transform-style: preserve-3d;
+}
+
+.head {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: #fff;
+    border-radius: 50%;
+    top: -5px;
+    left: 6px;
+}
+
+.torso {
+    position: absolute;
+    width: 4px;
+    height: 20px;
+    background: #fff;
+    top: 7px;
+    left: 10px;
+    border-radius: 2px;
+}
+
+.arm, .leg {
+    position: absolute;
+    width: 4px;
+    background: #fff;
+    border-radius: 2px;
+    transform-origin: top center;
+}
+
+.arm {
+    height: 16px;
+    top: 9px;
+}
+
+.leg {
+    height: 22px;
+    top: 25px;
+}
+
+.player-main {
+    bottom: 10%;
+    left: 10%;
+}
+
+    .player-main .head {
+        background: #38bdf8;
+        box-shadow: 0 0 10px #38bdf8;
+    }
+
+    .player-main .arm-left {
+        left: 4px;
+        transform: rotate(20deg);
+    }
+
+    .player-main .arm-right {
+        left: 14px;
+        transform: rotate(-25deg);
+        animation: swing-main 2s infinite linear;
+        animation-delay: -0.1s;
+    }
+
+    .player-main .leg-left {
+        left: 5px;
+        transform: rotate(15deg);
+    }
+
+    .player-main .leg-right {
+        left: 15px;
+        transform: rotate(-15deg);
+    }
+
+.opponent {
+    top: 10%;
+    right: 10%;
+}
+
+    .opponent .head {
+        background: #f43f5e;
+        box-shadow: 0 0 10px #f43f5e;
+    }
+
+    .opponent .arm-left {
+        left: 4px;
+        transform: rotate(20deg);
+    }
+
+    .opponent .arm-right {
+        left: 14px;
+        transform: rotate(-25deg);
+        animation: swing-opp 2s infinite linear;
+        animation-delay: -0.1s;
+    }
+
+    .opponent .leg-left {
+        left: 5px;
+        transform: rotate(15deg);
+    }
+
+    .opponent .leg-right {
+        left: 15px;
+        transform: rotate(-15deg);
+    }
+
+.racket {
+    position: absolute;
+    bottom: -12px;
+    left: -5px;
+    width: 14px;
+    height: 18px;
+    border: 2px solid #eab308;
+    border-radius: 50%;
+}
+
+    .racket::after {
+        content: '';
+        position: absolute;
+        width: 2px;
+        height: 10px;
+        background: #eab308;
+        top: -8px;
+        left: 4px;
+    }
+
+.ball-3d {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #ccff00;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #ccff00, 0 0 20px #ccff00;
+    animation: rally-3d 2s infinite linear;
+}
+
+.ball-shadow {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 50%;
+    filter: blur(2px);
+    animation: shadow-move 2s infinite linear;
+}
+
+@keyframes rally-3d {
+    0% {
+        bottom: 12%;
+        left: 12%;
+        transform: translateZ(15px);
+    }
+
+    25% {
+        bottom: 50%;
+        left: 50%;
+        transform: translateZ(80px);
+    }
+
+    50% {
+        bottom: 88%;
+        left: 88%;
+        transform: translateZ(15px);
+    }
+
+    75% {
+        bottom: 50%;
+        left: 50%;
+        transform: translateZ(80px);
+    }
+
+    100% {
+        bottom: 12%;
+        left: 12%;
+        transform: translateZ(15px);
+    }
+}
+
+@keyframes shadow-move {
+    0%, 50%, 100% {
+        opacity: 0.8;
+        transform: scale(1);
+    }
+
+    25%, 75% {
+        opacity: 0.3;
+        transform: scale(0.5);
+    }
+
+    0% {
+        bottom: 12%;
+        left: 12%;
+    }
+
+    25%, 75% {
+        bottom: 50%;
+        left: 50%;
+    }
+
+    50% {
+        bottom: 88%;
+        left: 88%;
+    }
+}
+
+@keyframes swing-main {
+    0%, 80%, 100% {
+        transform: rotate(-25deg);
+    }
+
+    90% {
+        transform: rotate(-130deg) translateY(-4px);
+    }
+}
+
+@keyframes swing-opp {
+    30%, 70% {
+        transform: rotate(-25deg);
+    }
+
+    50% {
+        transform: rotate(-130deg) translateY(-4px);
+    }
+}
+@media (min-width: 992px) {
+    .border-start {
+        border-left: 1px solid #475569 !important;
+        min-height: 200px;
+    }
+}
+
+
+.iso-arena-wrapper {
+    width: 100%;
+    height: 220px;
+    max-width: 300px;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    perspective: 1000px;
+    background: transparent !important;
+    border: none !important;
+    margin: 0 auto; 
+}
+
+.border-start {
+    transition: border-color 0.3s;
+}
+
+    .border-start:hover {
+        border-left-color: #38bdf8 !important;
+    }

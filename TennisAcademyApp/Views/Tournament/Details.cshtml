@@ -1,0 +1,72 @@
+﻿@model TennisAcademyApp.ViewModels.Tournament.TournamentDetailsViewModel
+@{
+    var requestCulture = ViewContext.HttpContext.Features.Get<Microsoft.AspNetCore.Localization.IRequestCultureFeature>();
+    var isBg = (requestCulture?.RequestCulture.UICulture.Name ?? "en") == "bg";
+    ViewData["Title"] = isBg ? Model.TitleBg : Model.Title;
+}
+
+<div class="container mt-5">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="card shadow border-0 rounded-4 p-4 bg-dark text-light">
+        <div class="card-body">
+            <h2 class="fw-bold mb-3 text-primary">@(isBg? Model.TitleBg: Model.Title)</h2>
+            <hr class="border-secondary" />
+
+            <p class="fs-5 text-muted">@(isBg? Model.DescriptionBg: Model.Description)</p>
+
+            <div class="row my-4">
+                <div class="col-md-4">
+                    <h5><i class="bi bi-calendar3 text-warning me-2"></i>@(isBg ? "Период" : "Dates")</h5>
+                    <p>@Model.StartDate.ToString("dd.MM.yyyy") - @Model.EndDate.ToString("dd.MM.yyyy")</p>
+                </div>
+                <div class="col-md-4">
+                    <h5><i class="bi bi-wallet2 text-success me-2"></i>@(isBg ? "Такса за участие" : "Entry Fee")</h5>
+                    <p class="fw-bold text-success">€@Model.EntryFee.ToString("F2")</p>
+                </div>
+                <div class="col-md-4">
+                    <h5><i class="bi bi-people text-info me-2"></i>@(isBg ? "Записани участници" : "Participants")</h5>
+                    <p>@Model.CurrentParticipantsCount / @Model.MaxParticipants</p>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                @if (Model.IsAlreadyEnrolled)
+                {
+                    <form asp-action="Unenroll" asp-route-id="@Model.Id" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-lg btn-danger px-5 rounded-3 fw-bold shadow">
+                            <i class="bi bi-x-circle me-2"></i>@(isBg ? "Откажи участие" : "Leave Tournament")
+                        </button>
+                    </form>
+                }
+                else if (Model.CurrentParticipantsCount >= Model.MaxParticipants)
+                {
+                    <button class="btn btn-lg btn-secondary px-5 rounded-3" disabled>
+                        @(isBg ? "Местата са запълнени" : "Tournament Full")
+                    </button>
+                }
+                else
+                {
+                    <form asp-action="Enroll" asp-route-id="@Model.Id" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-lg btn-success px-5 rounded-3 fw-bold shadow">
+                            @(isBg ? "Запиши се за участие" : "Join Tournament")
+                        </button>
+                    </form>
+                }
+            </div>
+        </div>
+    </div>
+</div>
