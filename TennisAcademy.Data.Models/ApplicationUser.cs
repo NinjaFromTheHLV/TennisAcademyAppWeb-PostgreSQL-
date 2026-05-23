@@ -11,5 +11,6 @@ namespace TennisAcademyApp.Data.Models
         [MaxLength(50)]
         public string? LastName { get; set; }
         public DateTime? LastWheelSpinDate { get; set; }
+        public string? ProfilePictureUrl { get; set; }
     }
 }
