@@ -8,7 +8,6 @@ using TennisAcademyApp.Data.Models;
 namespace TennisAcademyApp.Controllers
 {
     [Authorize]
-    [Area("")]
     public class ProfileController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
