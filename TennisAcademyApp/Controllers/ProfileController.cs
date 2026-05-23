@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,15 +13,12 @@ namespace TennisAcademyApp.Controllers
     public class ProfileController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IWebHostEnvironment _webHostEnvironment;
-
-        public ProfileController(UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment)
+        public ProfileController(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
-            _webHostEnvironment = webHostEnvironment;
         }
 
-        [HttpGet]
+        [HttpGet("/Profile/ChangePicture")]
         public async Task<IActionResult> ChangePicture()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -31,30 +27,38 @@ namespace TennisAcademyApp.Controllers
             return View(user);
         }
 
-        [HttpPost]
+        [HttpPost("/Profile/UploadPicture")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> UploadPicture(IFormFile profilePicture)
         {
             if (profilePicture != null && profilePicture.Length > 0)
             {
+                if (profilePicture.Length > 2097152)
+                {
+                    ModelState.AddModelError(string.Empty, "Снимката не трябва да надвишава 2MB.");
+                    var currentUser = await _userManager.GetUserAsync(User);
+                    return View("ChangePicture", currentUser);
+                }
+
                 var user = await _userManager.GetUserAsync(User);
                 if (user == null) return NotFound();
 
-                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images", "users");
-                Directory.CreateDirectory(uploadsFolder);
-
-                string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(profilePicture.FileName);
-                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                using (var memoryStream = new MemoryStream())
                 {
-                    await profilePicture.CopyToAsync(fileStream);
-                }
+                    await profilePicture.CopyToAsync(memoryStream);
+                    byte[] imageBytes = memoryStream.ToArray();
 
-                user.ProfilePictureUrl = $"/images/users/{uniqueFileName}";
-                await _userManager.UpdateAsync(user);
+                    string base64String = Convert.ToBase64String(imageBytes);
+
+                    string contentType = profilePicture.ContentType;
+
+                    user.ProfilePictureUrl = $"data:{contentType};base64,{base64String}";
+
+                    await _userManager.UpdateAsync(user);
+                }
             }
 
-            return RedirectToAction("ChangePicture");
+            return Redirect("/Profile/ChangePicture");
         }
     }
 }
