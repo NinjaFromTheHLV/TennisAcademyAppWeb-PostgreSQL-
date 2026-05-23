@@ -7,6 +7,7 @@
     var isBg = currentCulture == "bg";
 
     ViewData["Title"] = isBg ? "Минали резервации" : "Past Reservations";
+    ViewData["ContentClass"] = "big-footer-margin";
 }
 
 <h2 class="mb-4 text-center text-light fw-bold">⏳ @(isBg ? "Минали резервации" : "Past Reservations")</h2>

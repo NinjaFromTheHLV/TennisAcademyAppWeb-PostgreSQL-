@@ -3,6 +3,7 @@
     var requestCulture = ViewContext.HttpContext.Features.Get<Microsoft.AspNetCore.Localization.IRequestCultureFeature>();
     var isBg = (requestCulture?.RequestCulture.UICulture.Name ?? "en") == "bg";
     ViewData["Title"] = isBg ? "Ранглиста" : "Leaderboard";
+    ViewData["ContentClass"] = "big-footer-margin";
 }
 
 <div class="container mt-5">
