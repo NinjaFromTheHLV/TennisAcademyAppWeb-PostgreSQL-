@@ -1,103 +1,38 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
-using TennisAcademyApp.Data;
+using TennisAcademyApp.Services.Interfaces;
 using TennisAcademyApp.ViewModels.Report;
-using TennisAcademyApp.ViewModels.Reports;
 
 namespace TennisAcademyApp.Areas.Admin.Controllers
 {
     public class ReportsController : AdminBaseController
     {
-        private readonly TennisAcademyDbContext dbContext;
+        private readonly IReportService _reportService;
 
-        public ReportsController(TennisAcademyDbContext dbContext)
+        public ReportsController(IReportService reportService)
         {
-            this.dbContext = dbContext;
+            _reportService = reportService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index(DateTime? fromDate, DateTime? toDate)
         {
-            var startPeriod = fromDate ?? new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-            var endPeriod = toDate ?? DateTime.Now;
-
-            var model = new ReportsDashboardViewModel
-            {
-                FromDate = startPeriod,
-                ToDate = endPeriod
-            };
-
-            model.CourtReports = await dbContext.Reservations
-                .Where(r => r.IsDeleted == false && r.Date >= startPeriod && r.Date <= endPeriod)
-                .GroupBy(r => r.Surface.Name)
-                .Select(g => new CourtReportViewModel
-                {
-                    SurfaceName = g.Key,
-                    TotalReservations = g.Count()
-                })
-                .OrderByDescending(c => c.TotalReservations)
-                .ToListAsync();
-
-            model.CoachReports = await dbContext.Reservations
-                .Where(r => r.IsDeleted == false && r.Date >= startPeriod && r.Date <= endPeriod)
-                .GroupBy(r => r.Coach.Name)
-                .Select(g => new CoachReportViewModel
-                {
-                    CoachName = g.Key,
-                    TotalTrainings = g.Count(),
-                    TotalDurationMinutes = g.Sum(r => r.Duration)
-                })
-                .OrderByDescending(c => c.TotalTrainings)
-                .ToListAsync();
-
+            var model = await _reportService.GetReportsAsync(fromDate, toDate);
             return View(model);
         }
+
         [HttpGet]
         public async Task<IActionResult> ExportReportToJson(DateTime? fromDate, DateTime? toDate)
         {
             try
             {
+                string jsonString = await _reportService.GetJsonReportAsync(fromDate, toDate);
+                byte[] fileBytes = Encoding.UTF8.GetBytes(jsonString);
+
                 var startPeriod = fromDate ?? new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
                 var endPeriod = toDate ?? DateTime.Now;
-
-                var courtReports = await dbContext.Reservations
-                    .Where(r => r.IsDeleted == false && r.Date >= startPeriod && r.Date <= endPeriod)
-                    .GroupBy(r => r.Surface.Name)
-                    .Select(g => new CourtReportViewModel
-                    {
-                        SurfaceName = g.Key,
-                        TotalReservations = g.Count()
-                    })
-                    .OrderByDescending(c => c.TotalReservations)
-                    .ToListAsync();
-
-                var coachReports = await dbContext.Reservations
-                    .Where(r => r.IsDeleted == false && r.Date >= startPeriod && r.Date <= endPeriod)
-                    .GroupBy(r => r.Coach.Name)
-                    .Select(g => new CoachReportViewModel
-                    {
-                        CoachName = g.Key,
-                        TotalTrainings = g.Count(),
-                        TotalDurationMinutes = g.Sum(r => r.Duration)
-                    })
-                    .OrderByDescending(c => c.TotalTrainings)
-                    .ToListAsync();
-
-                var exportData = new
-                {
-                    ReportPeriod = new { From = startPeriod.ToString("yyyy-MM-dd"), To = endPeriod.ToString("yyyy-MM-dd") },
-                    ExportedAt = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
-                    CourtUtilizationReport = courtReports,
-                    CoachWorkloadReport = coachReports
-                };
-
-                var jsonOptions = new System.Text.Json.JsonSerializerOptions { WriteIndented = true };
-                string jsonString = System.Text.Json.JsonSerializer.Serialize(exportData, jsonOptions);
-
-                byte[] fileBytes = System.Text.Encoding.UTF8.GetBytes(jsonString);
                 string fileName = $"Business_Report_{startPeriod:yyyyMMdd}_to_{endPeriod:yyyyMMdd}.json";
 
                 return File(fileBytes, "application/json", fileName);

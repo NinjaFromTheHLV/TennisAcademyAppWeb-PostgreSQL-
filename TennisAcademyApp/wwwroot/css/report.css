@@ -1,0 +1,119 @@
+﻿﻿.big-footer-margin {
+    margin-bottom: 120px;
+}
+
+
+.card {
+    background-color: #1e293b !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 12px;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+    .card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4) !important;
+    }
+
+.card-header {
+    border-top-left-radius: 12px !important;
+    border-top-right-radius: 12px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    padding: 1rem 1.25rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: #ffffff !important;
+}
+
+.card-body label,
+.card-body .text-dark,
+.table td,
+.table th,
+.form-label {
+    color: #f8fafc !important;
+}
+
+.table {
+    margin-bottom: 0;
+}
+
+    .table th {
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 12px;
+        background-color: transparent !important;
+    }
+
+    .table td {
+        vertical-align: middle;
+        font-size: 1rem;
+        padding: 12px 15px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        background-color: transparent !important;
+    }
+
+
+.text-primary {
+    color: #00f2ff !important;
+}
+
+.text-success {
+    color: #4ade80 !important;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    transition: background-color 0.2s ease;
+}
+
+input[type="date"].form-control {
+    background-color: #0f172a !important;
+    color: #f8fafc !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    color-scheme: dark;
+}
+
+    input[type="date"].form-control:focus {
+        border-color: #ffd700 !important;
+        box-shadow: 0 0 0 0.2rem rgba(255, 215, 0, 0.25) !important;
+        background-color: #0f172a !important;
+        color: #ffffff !important;
+    }
+
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+    .btn:active {
+        transform: scale(0.97);
+    }
+
+.btn-warning {
+    background-color: #ffc107;
+    border-color: #ffc107;
+    color: #212529 !important;
+}
+
+    .btn-warning:hover {
+        background-color: #e0a800;
+        border-color: #d39e00;
+        color: #212529 !important;
+    }
+
+.btn-dark {
+    background-color: #334155 !important;
+    border-color: #334155 !important;
+    color: #f8fafc !important;
+}
+
+    .btn-dark:hover {
+        background-color: #475569 !important;
+        border-color: #475569 !important;
+        color: #ffffff !important;
+    }

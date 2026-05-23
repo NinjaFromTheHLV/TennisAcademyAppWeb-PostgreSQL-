@@ -1,4 +1,4 @@
-﻿@using TennisAcademyApp.ViewModels.Report;
+﻿﻿@using TennisAcademyApp.ViewModels.Report;
 @model ReportsDashboardViewModel
 
 @{
@@ -10,6 +10,8 @@
     ViewData["ContentClass"] = "big-footer-margin";
 }
 
+<link href="~/css/report.css" rel="stylesheet" />
+
 <div class="container mt-4">
     <h2 class="text-center mb-4">📊 @(isBg ? "Бизнес отчети на системата" : "System Business Reports")</h2>
 
@@ -17,11 +19,11 @@
         <div class="card-body">
             <form method="get" asp-action="Index" class="row g-3 align-items-end">
                 <div class="col-md-4">
-                    <label class="form-label font-weight-bold">@(isBg ? "Начална дата" : "Start Date")</label>
+                    <label class="form-label font-weight-bold text-dark">@(isBg ? "Начална дата" : "Start Date")</label>
                     <input type="date" name="fromDate" value="@Model.FromDate.ToString("yyyy-MM-dd")" class="form-control" />
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label font-weight-bold">@(isBg ? "Крайна дата" : "End Date")</label>
+                    <label class="form-label font-weight-bold text-dark">@(isBg ? "Крайна дата" : "End Date")</label>
                     <input type="date" name="toDate" value="@Model.ToDate.ToString("yyyy-MM-dd")" class="form-control" />
                 </div>
                 <div class="col-md-4 d-flex gap-2">
@@ -47,7 +49,7 @@
                     <h5 class="mb-0">@(isBg ? "Заетост на кортовете" : "Court Utilization")</h5>
                 </div>
                 <div class="card-body">
-                    <table class="table table-striped table-hover">
+                    <table class="table table-striped table-hover text-dark">
                         <thead>
                             <tr>
                                 <th>@(isBg ? "Тип корт (Настилка)" : "Court Type (Surface)")</th>
@@ -58,7 +60,7 @@
                             @foreach (var court in Model.CourtReports)
                             {
                                 <tr>
-                                    <td>@(isBg ? (court.SurfaceNameBg ?? court.SurfaceName) : court.SurfaceName)</td>
+                                    <td>@(isBg && !string.IsNullOrWhiteSpace(court.SurfaceNameBg) ? court.SurfaceNameBg : court.SurfaceName)</td>
                                     <td class="text-end font-weight-bold text-primary">@court.TotalReservations</td>
                                 </tr>
                             }
@@ -82,10 +84,10 @@
                     <h5 class="mb-0">@(isBg ? "Натовареност на треньорите" : "Coach Workload")</h5>
                 </div>
                 <div class="card-body">
-                    <table class="table table-striped table-hover">
+                    <table class="table table-striped table-hover text-dark">
                         <thead>
                             <tr>
-                                <th>@(isBg ? "Теньор" : "Coach")</th>
+                                <th>@(isBg ? "Треньор" : "Coach")</th>
                                 <th class="text-end">@(isBg ? "Общо тренировки" : "Total Trainings")</th>
                                 <th class="text-end">@(isBg ? "Общо минути" : "Total Minutes")</th>
                             </tr>
@@ -94,7 +96,7 @@
                             @foreach (var coach in Model.CoachReports)
                             {
                                 <tr>
-                                    <td>@(isBg ? (coach.CoachNameBg ?? coach.CoachName) : coach.CoachName)</td>
+                                    <td>@(isBg && !string.IsNullOrWhiteSpace(coach.CoachNameBg) ? coach.CoachNameBg : coach.CoachName)</td>
                                     <td class="text-end text-success font-weight-bold">@coach.TotalTrainings</td>
                                     <td class="text-end">@coach.TotalDurationMinutes @(isBg ? "мин." : "min.")</td>
                                 </tr>

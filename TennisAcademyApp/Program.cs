@@ -7,6 +7,7 @@ using TennisAcademyApp.Services;
 using TennisAcademyApp.Services.Contracts;
 using TennisAcademyApp.Services.Core;
 using TennisAcademyApp.Services.Core.Contracts;
+using TennisAcademyApp.Services.Interfaces;
 using static TennisAcademyApp.Data.Seeding.RoleSeeding;
 
 namespace TennisAcademyApp
@@ -64,6 +65,7 @@ namespace TennisAcademyApp
             builder.Services.AddScoped<ITournamentService, TournamentService>();
             builder.Services.AddScoped<IRankingService, RankingService>();
             builder.Services.AddScoped<IWheelService, WheelService>();
+            builder.Services.AddScoped<IReportService, ReportService>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IDateTimeProvider, DateTimeProvider>();
 
