@@ -8,19 +8,25 @@
     var requestCulture = Context.Features.Get<IRequestCultureFeature>();
     var currentCulture = requestCulture?.RequestCulture.UICulture.Name ?? "en";
     var isBg = currentCulture == "bg";
+
+    var appUser = await UserManager.GetUserAsync(User);
+    var profilePictureUrl = !string.IsNullOrEmpty(appUser?.ProfilePictureUrl)
+        ? appUser.ProfilePictureUrl
+        : "/images/default-avatar.png";
 }
 
-<ul class="navbar-nav">
+<ul class="navbar-nav align-items-center mb-0">
     @if (SignInManager.IsSignedIn(User))
     {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
-                @(isBg ? $"Здравей, {User.Identity?.Name}!" : $"Hello, {User.Identity?.Name}!")
+        <li class="nav-item me-3">
+            <a class="nav-link d-flex align-items-center gap-2 text-white" asp-area="Identity" asp-page="/Account/Manage/Index" title="@(isBg ? "Редактирай профил" : "Manage Profile")">
+                <img src="@profilePictureUrl" alt="Avatar" class="rounded-circle border border-info shadow-sm" width="40" height="40" style="object-fit: cover;" />
+                <span class="fw-bold">@(isBg ? $"Здравей, {User.Identity?.Name}!" : $"Hello, {User.Identity?.Name}!")</span>
             </a>
         </li>
         <li class="nav-item">
-            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button type="submit" class="nav-link btn btn-link text-dark border-0">
+            <form class="form-inline m-0" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-3">
                     @(isBg ? "Изход" : "Logout")
                 </button>
             </form>
@@ -29,12 +35,12 @@
     else
     {
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">
+            <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Register">
                 @(isBg ? "Регистрация" : "Register")
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">
+            <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Login">
                 @(isBg ? "Вход" : "Login")
             </a>
         </li>
