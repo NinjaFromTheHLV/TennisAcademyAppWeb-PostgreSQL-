@@ -22,6 +22,41 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/TennisAcademyApp.styles.css" asp-append-version="true" />
+
+    <style>
+        /* Стилизация само за Инструкции прозореца */
+        .glass-modal {
+            background: rgba(18, 24, 38, 0.95) !important;
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(13, 202, 240, 0.4) !important;
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(13, 202, 240, 0.15), inset 0 0 15px rgba(13, 202, 240, 0.05) !important;
+        }
+        .glass-modal .modal-header {
+            border-bottom: 1px solid rgba(13, 202, 240, 0.15);
+        }
+        .glass-modal .modal-footer {
+            border-top: 1px solid rgba(13, 202, 240, 0.15);
+        }
+        .instruction-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        .instruction-card:hover {
+            border-color: rgba(13, 202, 240, 0.3);
+            background: rgba(13, 202, 240, 0.03);
+        }
+        .glow-btn {
+            box-shadow: 0 0 10px rgba(13, 202, 240, 0.3);
+            transition: all 0.3s ease;
+        }
+        .glow-btn:hover {
+            box-shadow: 0 0 20px rgba(13, 202, 240, 0.6);
+            transform: translateY(-2px);
+        }
+    </style>
 </head>
 <body>
 
@@ -195,49 +230,48 @@
 
         <div class="modal fade" id="instructionsModal" tabindex="-1" aria-labelledby="instructionsModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content bg-card border-info shadow-glow">
-                    <div class="modal-header border-bottom border-info border-opacity-25 position-relative overflow-hidden">
-                        <div class="modal-ambient-glow"></div>
-                        <h5 class="modal-title neon-text-blue fw-bold position-relative z-1" id="instructionsModalLabel">
-                            <i class="bi bi-rocket-takeoff-fill text-warning me-2"></i> Welcome to my project! 🚀
+                <div class="modal-content glass-modal text-light">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-info fw-bold" id="instructionsModalLabel">
+                            <i class="bi bi-rocket-takeoff-fill text-warning me-2"></i> Welcome to my project! 🎾✨
                         </h5>
-                        <button type="button" class="btn-close btn-close-white position-relative z-1" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body text-light p-4">
+                    <div class="modal-body p-4">
 
                         <p class="text-secondary mb-4 small">
                             @(isBg ? "Здравейте! Ето малко полезна информация за тестване на приложението:" : "Hello! Here is some useful information for testing the app:")
                         </p>
 
-                        <div class="bg-dark bg-opacity-50 p-3 rounded-3 border border-secondary border-opacity-25 mb-3">
-                            <h6 class="text-warning fw-bold mb-2"><i class="bi bi-shield-lock me-2"></i>@(isBg ? "Администраторски достъп" : "Admin Access")</h6>
-                            <div class="d-flex justify-content-between border-bottom border-secondary border-opacity-25 pb-1 mb-1">
+                        <div class="instruction-card p-3 mb-3">
+                            <h6 class="text-warning fw-bold mb-3"><i class="bi bi-shield-lock me-2"></i>@(isBg ? "Администратор" : "Administrator")</h6>
+                            <div class="d-flex justify-content-between border-bottom border-secondary border-opacity-25 pb-2 mb-2">
                                 <span class="text-secondary small">Email:</span>
-                                <span class="fw-medium text-info">admin@test.com</span>
+                                <span class="fw-medium text-white">admin@@abv.bg</span>
                             </div>
                             <div class="d-flex justify-content-between">
                                 <span class="text-secondary small">Password:</span>
-                                <span class="fw-medium text-info">Admin123!</span>
+                                <span class="fw-medium text-white">admin123!</span>
                             </div>
                         </div>
 
-                        <div class="bg-dark bg-opacity-50 p-3 rounded-3 border border-secondary border-opacity-25">
-                            <h6 class="text-success fw-bold mb-2"><i class="bi bi-person-badge me-2"></i>@(isBg ? "Треньорски профили" : "Coach Profiles")</h6>
-                            <p class="small text-secondary mb-2">
-                                @(isBg ? "Когато създавате нов треньор, системата автоматично генерира акаунт за него по следната логика:" : "When creating a new coach, the system automatically generates an account using this logic:")
+                        <div class="instruction-card p-3">
+                            <h6 class="text-info fw-bold mb-2"><i class="bi bi-person-badge me-2"></i>@(isBg ? "Треньорски профили" : "Coach Profiles")</h6>
+                            <p class="small text-secondary mb-3">
+                                @(isBg ? "Акаунтите се генерират автоматично по следната логика:" : "Accounts are automatically generated using this logic:")
                             </p>
-                            <ul class="small text-light mb-0 ps-3">
-                                <li class="mb-1">
-                                    <span class="text-secondary">Email:</span> <span class="text-info">coach.[ПървоИме]@@academy.com</span>
-                                </li>
-                                <li>
-                                    <span class="text-secondary">Password:</span> <span class="text-info">Coach123!</span>
-                                </li>
-                            </ul>
+                            <div class="d-flex justify-content-between border-bottom border-secondary border-opacity-25 pb-2 mb-2">
+                                <span class="text-secondary small">Email:</span>
+                                <span class="fw-medium text-info">[име].[фамилия]@@tennis.com</span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span class="text-secondary small">Password:</span>
+                                <span class="fw-medium text-white">Coach123!</span>
+                            </div>
                         </div>
 
                     </div>
-                    <div class="modal-footer border-top border-info border-opacity-25 p-2">
+                    <div class="modal-footer p-3">
                         <button type="button" class="btn btn-outline-info w-100" data-bs-dismiss="modal">
                             @(isBg ? "Разбрах, нека тестваме!" : "Got it, let's test!")
                         </button>
