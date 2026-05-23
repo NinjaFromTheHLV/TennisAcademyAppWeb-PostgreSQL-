@@ -3,14 +3,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.IO;
-using System.Threading.Tasks;
 using TennisAcademyApp.Data.Models;
 
 namespace TennisAcademyApp.Controllers
 {
     [Authorize]
+    [Area("")]
     public class ProfileController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -32,6 +30,7 @@ namespace TennisAcademyApp.Controllers
         }
 
         [HttpPost("/Profile/UploadPicture")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> UploadPicture(IFormFile profilePicture)
         {
             if (profilePicture != null && profilePicture.Length > 0)
@@ -54,7 +53,7 @@ namespace TennisAcademyApp.Controllers
                 await _userManager.UpdateAsync(user);
             }
 
-            return RedirectToAction(nameof(ChangePicture));
+            return Redirect("/Profile/ChangePicture");
         }
     }
 }
