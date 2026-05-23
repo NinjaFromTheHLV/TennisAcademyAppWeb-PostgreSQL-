@@ -148,6 +148,7 @@
                 <button type="button" id="sidebarToggle" class="btn btn-outline-primary border-0 me-3">
                     <i class="bi bi-list fs-4"></i>
                 </button>
+
                 <div class="ms-auto d-flex align-items-center gap-3">
                     <div class="dropdown">
                         <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" id="langDropdown" data-bs-toggle="dropdown" aria-expanded="false">
@@ -183,6 +184,80 @@
         <footer class="mt-auto bg-dark border-top border-secondary position-relative overflow-hidden footer-master">
             <div class="footer-ambient-glow"></div>
             <div class="container py-5 position-relative z-1">
+                <div class="row g-4 align-items-center">
+                    <div class="col-lg-7 text-center text-lg-start">
+                        <h3 class="fw-bold text-white mb-3">
+                            <i class="bi bi-trophy-fill text-warning me-2 d-inline-block shadow-pulse"></i>TennisAcademy
+                        </h3>
+                        <p class="text-secondary mb-4 pe-lg-5">
+                            @(isBg ? "Преоткрий играта. Усъвършенствай удара си. Резервирай своя корт само с няколко клика." : "Rediscover the game. Perfect your swing. Reserve your court with just a few clicks.")
+                        </p>
+                        <div class="row g-4 mb-4 text-start justify-content-center justify-content-lg-start">
+                            <div class="col-sm-6 col-md-5">
+                                <h6 class="text-uppercase tracking-wide mb-3 neon-text-blue"><i class="bi bi-clock me-2"></i>@(isBg ? "Работно време" : "Working Hours")</h6>
+                                <ul class="list-unstyled text-secondary small">
+                                    <li class="d-flex justify-content-between border-bottom border-secondary pb-1 mb-2">
+                                        <span>@(isBg ? "Пон - Пет:" : "Mon - Fri:")</span> <span class="text-white">08:00 - 20:00</span>
+                                    </li>
+                                    <li class="d-flex justify-content-between">
+                                        <span>@(isBg ? "Съб - Нед:" : "Sat - Sun:")</span> <span class="text-danger fw-bold">@(isBg ? "Почивни дни" : "Closed")</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-6 col-md-5">
+                                <h6 class="text-uppercase tracking-wide mb-3 neon-text-blue"><i class="bi bi-geo-alt me-2"></i>@(isBg ? "Контакти" : "Contacts")</h6>
+                                <ul class="list-unstyled text-secondary small">
+                                    <li class="mb-2"><i class="bi bi-pin-map text-white me-2"></i>@(isBg ? "София, Студентски град" : "Sofia, Studentski grad")</li>
+                                    <li class="mb-3"><i class="bi bi-telephone text-white me-2"></i>+359 888 123 456</li>
+                                    <li>
+                                        <div class="live-status-badge">
+                                            <span class="pulsing-dot"></span> @(isBg ? "Кортовете са отворени" : "Courts are open")
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="social-links d-flex gap-3 justify-content-center justify-content-lg-start mt-2">
+                            <a href="javascript:void(0);" class="social-btn instagram"><i class="bi bi-instagram"></i></a>
+                            <a href="javascript:void(0);" class="social-btn facebook"><i class="bi bi-facebook"></i></a>
+                            <a href="javascript:void(0);" class="social-btn youtube"><i class="bi bi-youtube"></i></a>
+                            <a href="javascript:void(0);" class="social-btn tiktok"><i class="bi bi-tiktok"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 mt-5 mt-lg-0 border-start border-secondary d-flex justify-content-center align-items-center">
+                        <div class="iso-arena-wrapper bg-transparent border-0">
+                            <div class="iso-arena">
+                                <div class="iso-court">
+                                    <div class="court-lines"></div>
+                                    <div class="net-3d"></div>
+                                    <div class="ball-shadow"></div>
+                                    <div class="ball-3d"></div>
+                                    <div class="stickman opponent">
+                                        <div class="head"></div><div class="torso"></div>
+                                        <div class="arm arm-left"></div>
+                                        <div class="arm arm-right"><div class="racket"></div></div>
+                                        <div class="leg leg-left"></div><div class="leg leg-right"></div>
+                                    </div>
+                                    <div class="stickman player-main">
+                                        <div class="head text-primary-glow"></div><div class="torso"></div>
+                                        <div class="arm arm-left"></div>
+                                        <div class="arm arm-right"><div class="racket"></div></div>
+                                        <div class="leg leg-left"></div><div class="leg leg-right"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-5 pt-4 border-top border-secondary text-center">
+                    <div class="col-12 py-2">
+                        <small class="text-secondary tracking-wide d-block">
+                            &copy; @DateTime.Now.Year - TENNIS ACADEMY APP
+                            <span class="mx-2 opacity-50">|</span>
+                            ENDLESS RALLY EDITION
+                        </small>
+                    </div>
+                </div>
             </div>
         </footer>
     </div>
