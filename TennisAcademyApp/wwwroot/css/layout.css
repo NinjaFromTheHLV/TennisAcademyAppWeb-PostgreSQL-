@@ -523,3 +523,28 @@ footer {
 .big-footer-margin {
     margin-bottom: 500px !important;
 }
+
+.glow-btn {
+    box-shadow: 0 0 10px rgba(13, 202, 240, 0.3);
+    transition: all 0.3s ease;
+}
+
+    .glow-btn:hover {
+        box-shadow: 0 0 20px rgba(13, 202, 240, 0.6);
+        transform: translateY(-2px);
+    }
+
+.shadow-glow {
+    box-shadow: 0 0 30px rgba(13, 202, 240, 0.15) !important;
+}
+
+.modal-ambient-glow {
+    position: absolute;
+    top: -50%;
+    left: -10%;
+    width: 60%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(13, 202, 240, 0.1) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
