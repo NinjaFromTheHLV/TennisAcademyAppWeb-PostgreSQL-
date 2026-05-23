@@ -517,3 +517,11 @@ footer {
     .border-start:hover {
         border-left-color: #38bdf8 !important;
     }
+
+.mb-0 {
+    margin-bottom: 0 !important;
+}
+
+.big-footer-margin {
+    margin-bottom: 120px !important;
+}
