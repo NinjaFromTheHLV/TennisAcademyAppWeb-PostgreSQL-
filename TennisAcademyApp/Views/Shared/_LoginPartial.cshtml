@@ -10,9 +10,10 @@
     var isBg = currentCulture == "bg";
 
     var appUser = await UserManager.GetUserAsync(User);
+
     var profilePictureUrl = !string.IsNullOrEmpty(appUser?.ProfilePictureUrl)
         ? appUser.ProfilePictureUrl
-        : "/default-avatar.png";
+        : "https://images.icon-icons.com/1378/PNG/512/avatardefault_92824.png";
 }
 
 <ul class="navbar-nav align-items-center mb-0">
@@ -20,7 +21,7 @@
     {
         <li class="nav-item me-3">
             <a class="nav-link d-flex align-items-center gap-2 text-white" asp-area="" asp-controller="Profile" asp-action="ChangePicture" title="@(isBg ? "Смени профилна снимка" : "Change Profile Picture")">
-                <img src="@profilePictureUrl" alt="Avatar" class="rounded-circle border border-info shadow-sm" width="40" height="40" style="object-fit: cover;" />
+                <img src="@profilePictureUrl" alt="Avatar" class="rounded-circle border border-info shadow-sm" width="40" height="40" style="object-fit: cover; background-color: white;" />
                 <span class="fw-bold">@(isBg ? $"Здравей, {User.Identity?.Name}!" : $"Hello, {User.Identity?.Name}!")</span>
             </a>
         </li>
