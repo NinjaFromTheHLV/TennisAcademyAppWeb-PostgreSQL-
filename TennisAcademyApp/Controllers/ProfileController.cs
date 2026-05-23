@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.IO;
+using System.Threading.Tasks;
 using TennisAcademyApp.Data.Models;
 
 namespace TennisAcademyApp.Controllers
@@ -19,7 +22,7 @@ namespace TennisAcademyApp.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
-        [HttpGet("/Profile/ChangePicture")]
+        [HttpGet]
         public async Task<IActionResult> ChangePicture()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -28,8 +31,7 @@ namespace TennisAcademyApp.Controllers
             return View(user);
         }
 
-        [HttpPost("/Profile/UploadPicture")]
-        [ValidateAntiForgeryToken]
+        [HttpPost]
         public async Task<IActionResult> UploadPicture(IFormFile profilePicture)
         {
             if (profilePicture != null && profilePicture.Length > 0)
@@ -52,7 +54,7 @@ namespace TennisAcademyApp.Controllers
                 await _userManager.UpdateAsync(user);
             }
 
-            return Redirect("/Profile/ChangePicture");
+            return RedirectToAction("ChangePicture");
         }
     }
 }
