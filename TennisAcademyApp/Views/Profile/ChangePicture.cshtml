@@ -1,0 +1,113 @@
+﻿@using Microsoft.AspNetCore.Localization
+@model TennisAcademyApp.Data.Models.ApplicationUser
+
+@{
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+    var isBg = (requestCulture?.RequestCulture.UICulture.Name ?? "en") == "bg";
+
+    ViewData["Title"] = isBg ? "Смяна на профилна снимка" : "Change Profile Picture";
+
+    var currentPic = !string.IsNullOrEmpty(Model.ProfilePictureUrl)
+        ? Model.ProfilePictureUrl
+        : "/images/default-avatar.png";
+}
+
+<style>
+    .profile-card {
+        background: #1e293b;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .avatar-wrapper {
+        position: relative;
+        width: 180px;
+        height: 180px;
+        margin: 0 auto;
+    }
+
+    .avatar-preview {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid #0dcaf0;
+        box-shadow: 0 0 25px rgba(13, 202, 240, 0.4);
+        transition: all 0.3s ease;
+    }
+
+    .upload-btn-wrapper {
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+        margin-top: 20px;
+    }
+
+        .upload-btn-wrapper input[type=file] {
+            font-size: 100px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+    .btn-glass {
+        background: rgba(13, 202, 240, 0.1);
+        border: 1px solid #0dcaf0;
+        color: #0dcaf0;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+        .btn-glass:hover {
+            background: #0dcaf0;
+            color: #000;
+            box-shadow: 0 0 15px rgba(13, 202, 240, 0.6);
+            transform: translateY(-2px);
+        }
+</style>
+
+<div class="container py-5 mt-5">
+    <div class="profile-card p-5 text-center">
+
+        <h3 class="text-white mb-4 fw-bold">
+            <i class="bi bi-camera text-info me-2"></i> @ViewData["Title"]
+        </h3>
+
+        <form asp-controller="Profile" asp-action="UploadPicture" method="post" enctype="multipart/form-data">
+
+            <div class="avatar-wrapper mb-4">
+                <img id="imagePreview" src="@currentPic" alt="Profile Preview" class="avatar-preview" />
+            </div>
+
+            <div class="upload-btn-wrapper w-100 mb-4">
+                <button type="button" class="btn btn-glass w-100 py-2 fw-bold">
+                    <i class="bi bi-folder2-open me-2"></i> @(isBg ? "Избери нова снимка" : "Choose new image")
+                </button>
+                <input type="file" name="profilePicture" accept="image/*" onchange="previewFile(event)" required />
+            </div>
+
+            <button type="submit" class="btn btn-info w-100 py-2 fw-bold shadow-sm" id="saveBtn" style="display: none;">
+                <i class="bi bi-cloud-arrow-up-fill me-2"></i> @(isBg ? "Запази промените" : "Save Changes")
+            </button>
+        </form>
+
+    </div>
+</div>
+
+<script>
+    function previewFile(event) {
+        var reader = new FileReader();
+        reader.onload = function() {
+            var output = document.getElementById('imagePreview');
+            output.src = reader.result;
+
+            document.getElementById('saveBtn').style.display = 'block';
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
