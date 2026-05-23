@@ -12,13 +12,18 @@ body {
     overflow-x: hidden;
 }
 .container-fluid.p-4 {
-    margin-bottom: 3rem; /* Добавя 48px разстояние между съдържанието и фуутъра */
+    margin-bottom: 3rem;
 }
 #sidebar {
     min-width: 260px;
     max-width: 260px;
     transition: all 0.3s ease;
     z-index: 1000;
+
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    overflow-y: auto;
 }
 
     #sidebar.collapsed {

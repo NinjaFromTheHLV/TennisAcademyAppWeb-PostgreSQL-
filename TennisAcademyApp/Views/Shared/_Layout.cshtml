@@ -142,7 +142,7 @@
         </ul>
     </nav>
     <script>
-        if (localStorage.getItem('sidebarCollapsed') === 'false') {
+        if (sessionStorage.getItem('sidebarCollapsed') === 'false') {
             document.getElementById('sidebar').classList.remove('collapsed');
         }
     </script>
@@ -276,7 +276,7 @@
 
             sidebarToggle.addEventListener('click', function () {
                 sidebar.classList.toggle('collapsed');
-                localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+                sessionStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
             });
         });
     </script>
