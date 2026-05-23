@@ -6,6 +6,7 @@
     var currentCulture = requestCulture?.RequestCulture.UICulture.Name ?? "en";
     var isBg = currentCulture == "bg";
 
+    ViewData["ContentClass"] = "mb-5 pb-5";
     ViewData["Title"] = isBg ? "Моите Резервации" : "My Reservations";
 }
 
