@@ -9,7 +9,7 @@
 
     var currentPic = !string.IsNullOrEmpty(Model.ProfilePictureUrl)
         ? Model.ProfilePictureUrl
-        : "/images/default-avatar.png";
+        : "/default-avatar.png";
 }
 
 <style>
@@ -78,7 +78,7 @@
             <i class="bi bi-camera text-info me-2"></i> @ViewData["Title"]
         </h3>
 
-        <form asp-controller="Profile" asp-action="UploadPicture" method="post" enctype="multipart/form-data">
+        <form asp-area="" asp-controller="Profile" asp-action="UploadPicture" method="post" enctype="multipart/form-data">
 
             <div class="avatar-wrapper mb-4">
                 <img id="imagePreview" src="@currentPic" alt="Profile Preview" class="avatar-preview" />
@@ -105,7 +105,6 @@
         reader.onload = function() {
             var output = document.getElementById('imagePreview');
             output.src = reader.result;
-
             document.getElementById('saveBtn').style.display = 'block';
         };
         reader.readAsDataURL(event.target.files[0]);

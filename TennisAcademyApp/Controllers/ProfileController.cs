@@ -11,6 +11,8 @@ using TennisAcademyApp.Data.Models;
 namespace TennisAcademyApp.Controllers
 {
     [Authorize]
+    [Route("Profile/[action]")]
+    [Authorize]
     public class ProfileController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
