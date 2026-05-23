@@ -75,11 +75,15 @@ footer {
     flex-shrink: 0;
     margin-bottom: 0 !important;
     padding-bottom: 0 !important;
+    padding-top: 4rem !important;
+    margin-top: auto !important;
 }
 
 .footer-master {
     background-color: #0b1120 !important;
     margin-bottom: 0 !important;
+    margin-top: 50px !important;
+    padding-bottom: 2rem !important;
 }
 
 .footer-ambient-glow {
