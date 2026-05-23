@@ -11,8 +11,6 @@ using TennisAcademyApp.Data.Models;
 namespace TennisAcademyApp.Controllers
 {
     [Authorize]
-    [Route("Profile/[action]")]
-    [Authorize]
     public class ProfileController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -24,7 +22,7 @@ namespace TennisAcademyApp.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
-        [HttpGet]
+        [HttpGet("/Profile/ChangePicture")]
         public async Task<IActionResult> ChangePicture()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -33,7 +31,7 @@ namespace TennisAcademyApp.Controllers
             return View(user);
         }
 
-        [HttpPost]
+        [HttpPost("/Profile/UploadPicture")]
         public async Task<IActionResult> UploadPicture(IFormFile profilePicture)
         {
             if (profilePicture != null && profilePicture.Length > 0)
@@ -56,7 +54,7 @@ namespace TennisAcademyApp.Controllers
                 await _userManager.UpdateAsync(user);
             }
 
-            return RedirectToAction("ChangePicture");
+            return RedirectToAction(nameof(ChangePicture));
         }
     }
 }

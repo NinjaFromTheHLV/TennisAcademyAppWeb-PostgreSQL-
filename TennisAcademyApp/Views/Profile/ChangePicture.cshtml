@@ -79,7 +79,7 @@
             <i class="bi bi-camera text-info me-2"></i> @ViewData["Title"]
         </h3>
 
-        <form asp-area="" asp-controller="Profile" asp-action="UploadPicture" method="post" enctype="multipart/form-data">
+        <form action="/Profile/UploadPicture" method="post" enctype="multipart/form-data">
 
             <div class="avatar-wrapper mb-4">
                 <img id="imagePreview" src="@currentPic" alt="Profile Preview" class="avatar-preview" />
