@@ -9,7 +9,6 @@ namespace TennisAcademyApp.Data
         {
             var optionsBuilder = new DbContextOptionsBuilder<TennisAcademyDbContext>();
 
-            // Взимаме от системната променлива ИЛИ слагаме локален стринг за разработка
             var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL")
                                    ?? "Host=localhost;Database=TennisAcademyDb;Username=postgres;Password=mypassword";
 

@@ -36,10 +36,7 @@ namespace TennisAcademyApp.Data
         {
             base.OnModelCreating(config);
 
-            // Пояснение: В Postgres "HasDefaultSchema" не се ползва по същия начин като в SQL Server.
-            // Ако е критично за бизнес логиката, трябва да се добави като Schema в имената на таблиците.
-
-            string auditColumnName = "LastModified"; // Опростено име
+            string auditColumnName = "LastModified";
 
             foreach (var entityType in config.Model.GetEntityTypes())
             {
@@ -56,7 +53,6 @@ namespace TennisAcademyApp.Data
 
                 config.Entity(entityType.ClrType)
                     .Property<DateTime>(auditColumnName)
-                    // Използваме CURRENT_TIMESTAMP, което работи и в Postgres, и в SQL Server
                     .HasDefaultValueSql("CURRENT_TIMESTAMP")
                     .ValueGeneratedOnAddOrUpdate();
             }
@@ -95,7 +91,6 @@ namespace TennisAcademyApp.Data
 
                 if (entry.State == EntityState.Added || entry.State == EntityState.Modified)
                 {
-                    // Използваме UTC време, което е стандарт за облачни бази данни
                     entry.Property(auditColumnName).CurrentValue = DateTime.UtcNow;
                 }
             }

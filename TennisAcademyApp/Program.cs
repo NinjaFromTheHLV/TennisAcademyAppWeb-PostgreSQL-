@@ -27,7 +27,6 @@ namespace TennisAcademyApp
                 throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             }
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-            // 2. Използваме UseNpgsql вместо UseSqlServer
             builder.Services.AddDbContext<TennisAcademyDbContext>(options =>
                 options.UseNpgsql(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -76,7 +75,6 @@ namespace TennisAcademyApp
             {
                 var services = scope.ServiceProvider;
                 var dbContext = scope.ServiceProvider.GetRequiredService<TennisAcademyDbContext>();
-                // Това автоматично ще създаде всички липсващи таблици в Neon.tech
                 dbContext.Database.Migrate();
                 SeedIdentityAsync(services).GetAwaiter().GetResult();
             }
