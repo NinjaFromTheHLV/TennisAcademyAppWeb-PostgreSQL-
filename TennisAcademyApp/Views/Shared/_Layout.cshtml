@@ -141,7 +141,11 @@
             }
         </ul>
     </nav>
-
+    <script>
+        if (localStorage.getItem('sidebarCollapsed') === 'false') {
+            document.getElementById('sidebar').classList.remove('collapsed');
+        }
+    </script>
     <div id="content-wrapper">
         <header class="navbar navbar-expand navbar-light bg-card border-bottom p-3">
             <div class="container-fluid p-0">
