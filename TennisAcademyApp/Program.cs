@@ -75,6 +75,9 @@ namespace TennisAcademyApp
             using (var scope = app.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
+                var dbContext = scope.ServiceProvider.GetRequiredService<TennisAcademyDbContext>();
+                // Това автоматично ще създаде всички липсващи таблици в Neon.tech
+                dbContext.Database.Migrate();
                 SeedIdentityAsync(services).GetAwaiter().GetResult();
             }
 
