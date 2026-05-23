@@ -82,7 +82,6 @@ footer {
 .footer-master {
     background-color: #0b1120 !important;
     margin-bottom: 0 !important;
-    margin-top: 50px !important;
     padding-bottom: 2rem !important;
 }
 
@@ -523,5 +522,5 @@ footer {
 }
 
 .big-footer-margin {
-    margin-bottom: 120px !important;
+    margin-bottom: 500px !important;
 }
