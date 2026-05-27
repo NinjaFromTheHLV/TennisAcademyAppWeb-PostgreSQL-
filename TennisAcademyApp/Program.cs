@@ -69,7 +69,15 @@ namespace TennisAcademyApp
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IDateTimeProvider, DateTimeProvider>();
 
-            builder.Services.AddSingleton(new DeepL.Translator(builder.Configuration["DeepL:ApiKey"]));
+            var deepLKey = Environment.GetEnvironmentVariable("DeepL__ApiKey")
+            ?? builder.Configuration["DeepL:ApiKey"];
+
+            if (string.IsNullOrWhiteSpace(deepLKey))
+            {
+                throw new InvalidOperationException("DeepL API Key is completely missing! Please check Render Environment Variables.");
+            }
+
+            builder.Services.AddSingleton(new DeepL.Translator(deepLKey));
 
             var app = builder.Build(); // <--- Container is locked here
 
